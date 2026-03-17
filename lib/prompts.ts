@@ -18,8 +18,6 @@ sodass der Banner authentisch für diese Zielgruppe wirkt.
 PROFIL:
 - Alter: {alter}
 - Geschlecht: {geschlecht}
-- Zivilstand: {zivilstand}
-- Wohnkanton: {kanton}
 - Wohnumgebung: {wohnumgebung}
 - Bildungsstand: {bildung}
 - Berufsstatus: {beruf}
@@ -55,8 +53,6 @@ sodass der Banner authentisch für diese Zielgruppe wirkt.
 PROFIL:
 - Alter: {alter}
 - Geschlecht: {geschlecht}
-- Zivilstand: {zivilstand}
-- Wohnkanton: {kanton}
 - Wohnumgebung: {wohnumgebung}
 - Bildungsstand: {bildung}
 - Berufsstatus: {beruf}
@@ -74,8 +70,6 @@ export function promptAufbereiten(
   profil: {
     alter: number;
     geschlecht: string;
-    zivilstand: string;
-    kanton: string;
     wohnumgebung: string;
     bildung: string;
     beruf: string;
@@ -88,8 +82,6 @@ export function promptAufbereiten(
   return vorlage
     .replace('{alter}', String(profil.alter))
     .replace('{geschlecht}', profil.geschlecht)
-    .replace('{zivilstand}', profil.zivilstand)
-    .replace('{kanton}', profil.kanton)
     .replace('{wohnumgebung}', profil.wohnumgebung)
     .replace('{bildung}', profil.bildung)
     .replace('{beruf}', profil.beruf)

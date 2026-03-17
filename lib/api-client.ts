@@ -1,28 +1,7 @@
 // API-Abstraktionsschicht: unterstützt OpenAI (DALL-E) und Google Gemini (Imagen)
 
 import OpenAI from 'openai';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-// Minimale Typen für die experimentelle Gemini Imagen API
-interface GeminiGeneratedImage {
-  image?: { imageBytes?: string | Uint8Array };
-}
-
-interface GeminiImagesResponse {
-  generatedImages?: GeminiGeneratedImage[];
-}
-
-interface GeminiImagenModel {
-  generateImages(params: {
-    prompt: string;
-    number_of_images: number;
-    aspect_ratio: string;
-  }): Promise<GeminiImagesResponse>;
-}
-
-interface GeminiClientWithImagen {
-  getGenerativeModel(params: { model: string }): GeminiImagenModel;
-}
+import { GoogleGenAI } from '@google/genai';
 
 // Umgebungsvariablen (serverseitig)
 const API_KEY = process.env.API_KEY ?? '';
@@ -66,29 +45,24 @@ async function openAiBildGenerieren(prompt: string): Promise<string> {
   return `data:image/png;base64,${b64}`;
 }
 
-/** Bildgenerierung via Google Gemini Imagen */
+/** Bildgenerierung via Google Gemini (generateContent API) */
 async function geminibildGenerieren(prompt: string): Promise<string> {
-  const genAI = new GoogleGenerativeAI(API_KEY) as unknown as GeminiClientWithImagen;
+  const ai = new GoogleGenAI({ apiKey: API_KEY });
 
-  // Imagen-Modell aufrufen (z.B. "imagen-3.0-generate-002")
-  const modell = genAI.getGenerativeModel({ model: IMAGE_MODEL });
-
-  const ergebnis = await modell.generateImages({
-    prompt,
-    number_of_images: 1,
-    aspect_ratio: '1:1',
+  const antwort = await ai.models.generateContent({
+    model: IMAGE_MODEL,
+    contents: prompt,
   });
 
-  const bildDaten = ergebnis?.generatedImages?.[0]?.image?.imageBytes;
-  if (!bildDaten) {
-    throw new Error('Kein Bild von Gemini erhalten.');
+  const teile = antwort.candidates?.[0]?.content?.parts ?? [];
+  if (!antwort.candidates?.[0]) {
+    throw new Error('Keine Kandidaten von Gemini erhalten.');
+  }
+  for (const teil of teile) {
+    if (teil.inlineData?.data) {
+      return `data:image/png;base64,${teil.inlineData.data}`;
+    }
   }
 
-  // imageBytes ist ein Base64-String oder Uint8Array
-  const base64 =
-    typeof bildDaten === 'string'
-      ? bildDaten
-      : Buffer.from(bildDaten).toString('base64');
-
-  return `data:image/png;base64,${base64}`;
+  throw new Error('Kein Bild von Gemini erhalten.');
 }

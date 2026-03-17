@@ -11,14 +11,6 @@ import SegmentedControl from './ui/SegmentedControl';
 import Stepper from './ui/Stepper';
 import Button from './ui/Button';
 
-// Alle 26 Schweizer Kantone
-const KANTONE = [
-  'Aargau', 'Appenzell Ausserrhoden', 'Appenzell Innerrhoden', 'Basel-Landschaft',
-  'Basel-Stadt', 'Bern', 'Freiburg', 'Genf', 'Glarus', 'Graubünden',
-  'Jura', 'Luzern', 'Neuenburg', 'Nidwalden', 'Obwalden', 'Schaffhausen',
-  'Schwyz', 'Solothurn', 'St. Gallen', 'Tessin', 'Thurgau', 'Uri',
-  'Waadt', 'Wallis', 'Zug', 'Zürich',
-];
 
 const BILDUNGSOPTIONEN = [
   'Obligatorische Schule',
@@ -36,14 +28,10 @@ const BERUFSOPTIONEN = [
   'Student/in',
 ];
 
-const ZIVILSTANDOPTIONEN = ['Ledig', 'Verheiratet', 'Geschieden', 'Verwitwet'];
-
 // Standardwerte für das Formular
 const STANDARD_PROFIL: ProfilDaten = {
   alter: 35,
   geschlecht: 'Männlich',
-  zivilstand: 'Ledig',
-  kanton: '',
   wohnumgebung: 'Stadt',
   bildung: 'Bachelor',
   beruf: 'Angestellt',
@@ -73,11 +61,8 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
 
   function absenden(e: React.FormEvent) {
     e.preventDefault();
-    if (!profil.kanton) return;
     onGenerieren(profil);
   }
-
-  const formGueltig = !!profil.kanton;
 
   return (
     <motion.div
@@ -130,26 +115,6 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
                 v as ProfilDaten['geschlecht']
               )
             }
-          />
-
-          {/* Zivilstand */}
-          <Dropdown
-            beschriftung="Zivilstand"
-            optionen={ZIVILSTANDOPTIONEN}
-            wert={profil.zivilstand}
-            onChange={(v) =>
-              feldAktualisieren('zivilstand', v as ProfilDaten['zivilstand'])
-            }
-          />
-
-          {/* Wohnkanton */}
-          <Dropdown
-            beschriftung="Wohnkanton"
-            optionen={KANTONE}
-            wert={profil.kanton}
-            onChange={(v) => feldAktualisieren('kanton', v)}
-            suchbar
-            platzhalter="Kanton auswählen…"
           />
 
           {/* Wohnumgebung */}
@@ -238,18 +203,11 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             <Button
               type="submit"
               laedt={laedt}
-              disabled={!formGueltig}
               className="w-full sm:w-auto min-w-[220px]"
             >
               Banner generieren
             </Button>
           </div>
-
-          {!formGueltig && (
-            <p className="text-center text-xs text-red-400">
-              Bitte wählen Sie einen Wohnkanton aus.
-            </p>
-          )}
         </form>
       </div>
     </motion.div>
