@@ -3,8 +3,6 @@
 export interface ProfilDaten {
   alter: number;
   geschlecht: 'Männlich' | 'Weiblich' | 'Divers';
-  zivilstand: 'Ledig' | 'Verheiratet' | 'Geschieden' | 'Verwitwet';
-  kanton: string;
   wohnumgebung: 'Stadt' | 'Land' | 'Agglomeration';
   bildung: 'Obligatorische Schule' | 'Berufslehre' | 'Matura' | 'Bachelor' | 'Master/Doktorat';
   beruf: 'Angestellt' | 'Selbständig' | 'Arbeitslos' | 'Rentner/in' | 'Student/in';
