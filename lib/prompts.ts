@@ -1,7 +1,7 @@
 // Prompt-Vorlagen für die politischen Werbebanner-Generierung
 
 // Volksinitiative 1: «Keine 10-Millionen-Schweiz! (Nachhaltigkeitsinitiative)»
-export const PROMPT_VORLAGE_1 = `
+export const PROMPT_NACHHALTIGKEITSINITIATIVE = `
 Du bist Spezialist für politische Kommunikation in der Schweiz.
 Du erhältst Profildaten einer Person aus einer Umfrage.
 Erstelle basierend auf diesen Daten einen fertig verwendbaren politischen
@@ -20,6 +20,7 @@ PROFIL:
 - Geschlecht: {geschlecht}
 - Zivilstand: {zivilstand}
 - Wohnkanton: {kanton}
+- Wohnumgebung: {wohnumgebung}
 - Bildungsstand: {bildung}
 - Berufsstatus: {beruf}
 - Haushaltsgrösse: {haushalt} Personen
@@ -30,21 +31,33 @@ PROFIL:
 Wichtig: Nur Bildausgabe, kein Text als Antwort.
 `;
 
-// Volksinitiative 2: Platzhalter für zukünftige Erweiterung
-export const PROMPT_VORLAGE_2 = `
+// Volksinitiative 2: Änderung des Zivildienstgesetzes
+export const PROMPT_ZIVILDIENSTGESETZ = `
 Du bist Spezialist für politische Kommunikation in der Schweiz.
 Du erhältst Profildaten einer Person aus einer Umfrage.
 Erstelle basierend auf diesen Daten einen fertig verwendbaren politischen
-Werbebanner für die JA-Kampagne zur zweiten Volksabstimmung.
+Werbebanner für die JA-Kampagne zur Volksabstimmung über die
+Änderung des Zivildienstgesetzes.
+
+Hintergrund: Die Vorlage sieht vor, dass Zivildienstleistende künftig
+länger Zivildienst leisten müssen (Faktor 1,5 statt bisher 1,1 gegenüber
+der Militärdienstzeit). Zudem sollen Einsatzbetriebe stärker reguliert
+und die Bedingungen für einen Wechsel vom Militär- zum Zivildienst
+verschärft werden.
 
 Der Banner soll sofort einsatzbereit sein als Instagram-Post
 (quadratisch, 1080x1080px).
+
+Du entscheidest eigenständig über Slogan, Bildsprache, Farbwelt,
+Typografie und Komposition – alles abgeleitet aus dem Profil der Person,
+sodass der Banner authentisch für diese Zielgruppe wirkt.
 
 PROFIL:
 - Alter: {alter}
 - Geschlecht: {geschlecht}
 - Zivilstand: {zivilstand}
 - Wohnkanton: {kanton}
+- Wohnumgebung: {wohnumgebung}
 - Bildungsstand: {bildung}
 - Berufsstatus: {beruf}
 - Haushaltsgrösse: {haushalt} Personen
@@ -63,6 +76,7 @@ export function promptAufbereiten(
     geschlecht: string;
     zivilstand: string;
     kanton: string;
+    wohnumgebung: string;
     bildung: string;
     beruf: string;
     haushalt: number;
@@ -76,6 +90,7 @@ export function promptAufbereiten(
     .replace('{geschlecht}', profil.geschlecht)
     .replace('{zivilstand}', profil.zivilstand)
     .replace('{kanton}', profil.kanton)
+    .replace('{wohnumgebung}', profil.wohnumgebung)
     .replace('{bildung}', profil.bildung)
     .replace('{beruf}', profil.beruf)
     .replace('{haushalt}', String(profil.haushalt))

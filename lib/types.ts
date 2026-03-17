@@ -5,6 +5,7 @@ export interface ProfilDaten {
   geschlecht: 'Männlich' | 'Weiblich' | 'Divers';
   zivilstand: 'Ledig' | 'Verheiratet' | 'Geschieden' | 'Verwitwet';
   kanton: string;
+  wohnumgebung: 'Stadt' | 'Land' | 'Agglomeration';
   bildung: 'Obligatorische Schule' | 'Berufslehre' | 'Matura' | 'Bachelor' | 'Master/Doktorat';
   beruf: 'Angestellt' | 'Selbständig' | 'Arbeitslos' | 'Rentner/in' | 'Student/in';
   haushalt: number;
@@ -20,4 +21,4 @@ export interface GenerierungsAntwort {
 }
 
 // Verfügbare Volksabstimmungen (erweiterbar)
-export type AbstimmungsTyp = 'abstimmung1' | 'abstimmung2';
+export type AbstimmungsTyp = 'nachhaltigkeitsinitiative' | 'zivildienstgesetz';
