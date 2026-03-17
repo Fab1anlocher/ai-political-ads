@@ -4,13 +4,6 @@
 
 Eine Next.js App, die personalisierte politische Werbebilder für Schweizer Volksabstimmungen generiert. Die App nutzt Umfragedaten, um via KI-API (OpenAI DALL-E oder Google Gemini Imagen) massgeschneiderte Werbebilder zu erzeugen.
 
-## Features
-
-- **3-Screen Single-Page-App**: Willkommen → Umfrage → Ergebnis
-- **Apple-inspiriertes UI**: Minimalistisch, Framer Motion Animationen, Inter-Font
-- **Unterstützte KI-APIs**: OpenAI (DALL-E 3) und Google Gemini (Imagen)
-- **Kein persistenter Speicher**: Keine Datenbank, keine Datenspeicherung
-- **Erweiterbar**: Struktur ermöglicht einfache Ergänzung weiterer Volksabstimmungen
 
 ## Schnellstart
 
