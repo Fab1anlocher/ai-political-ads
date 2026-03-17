@@ -34,7 +34,7 @@ export const PROMPT_ZIVILDIENSTGESETZ = `
 Du bist Spezialist für politische Kommunikation in der Schweiz.
 Du erhältst Profildaten einer Person aus einer Umfrage.
 Erstelle basierend auf diesen Daten einen fertig verwendbaren politischen
-Werbebanner für die JA-Kampagne zur Volksabstimmung über die
+Werbebanner für die Nein-Kampagne zur Volksabstimmung über die
 Änderung des Zivildienstgesetzes.
 
 Hintergrund: Die Vorlage sieht vor, dass Zivildienstleistende künftig
