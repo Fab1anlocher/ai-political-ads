@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { ProfilDaten, GenerierungsAntwort } from '@/lib/types';
+import { ProfilDaten, GenerierungsAntwort, AbstimmungsTyp } from '@/lib/types';
 import WillkommensScreen from '@/components/WelcomeScreen';
 import UmfrageFormular from '@/components/SurveyForm';
 import ErgebnisScreen from '@/components/ResultScreen';
@@ -17,6 +17,7 @@ export default function Home() {
   const [bildUrl, setBildUrl] = useState<string | null>(null);
   const [laedt, setLaedt] = useState(false);
   const [fehler, setFehler] = useState<string | null>(null);
+  const [abstimmung, setAbstimmung] = useState<AbstimmungsTyp>('nachhaltigkeitsinitiative');
 
   // Banner-Generierung via API-Route
   async function bannerGenerieren(profil: ProfilDaten) {
@@ -29,7 +30,7 @@ export default function Home() {
       const antwort = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profil, abstimmung: 'abstimmung1' }),
+        body: JSON.stringify({ profil, abstimmung }),
       });
 
       const daten: GenerierungsAntwort = await antwort.json();
@@ -72,6 +73,8 @@ export default function Home() {
             key="umfrage"
             onGenerieren={bannerGenerieren}
             laedt={laedt}
+            abstimmung={abstimmung}
+            onAbstimmungWechseln={setAbstimmung}
           />
         )}
 

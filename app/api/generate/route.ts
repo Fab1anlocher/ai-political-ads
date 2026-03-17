@@ -3,7 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { bildGenerieren } from '@/lib/api-client';
-import { promptAufbereiten, PROMPT_VORLAGE_1, PROMPT_VORLAGE_2 } from '@/lib/prompts';
+import { promptAufbereiten, PROMPT_NACHHALTIGKEITSINITIATIVE, PROMPT_ZIVILDIENSTGESETZ } from '@/lib/prompts';
 import { ProfilDaten, AbstimmungsTyp } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
@@ -22,10 +22,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Prompt je nach Abstimmung auswählen (erweiterbar auf PROMPT_VORLAGE_2)
-    const vorlage = abstimmung === 'abstimmung2'
-      ? PROMPT_VORLAGE_2
-      : PROMPT_VORLAGE_1;
+    // Prompt je nach Abstimmung auswählen
+    const vorlage = abstimmung === 'zivildienstgesetz'
+      ? PROMPT_ZIVILDIENSTGESETZ
+      : PROMPT_NACHHALTIGKEITSINITIATIVE;
 
     // Prompt mit Profildaten befüllen
     const prompt = promptAufbereiten(vorlage, profil);

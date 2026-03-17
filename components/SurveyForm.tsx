@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ProfilDaten } from '@/lib/types';
+import { ProfilDaten, AbstimmungsTyp } from '@/lib/types';
 import Slider from './ui/Slider';
 import Dropdown from './ui/Dropdown';
 import SegmentedControl from './ui/SegmentedControl';
@@ -44,6 +44,7 @@ const STANDARD_PROFIL: ProfilDaten = {
   geschlecht: 'Männlich',
   zivilstand: 'Ledig',
   kanton: '',
+  wohnumgebung: 'Stadt',
   bildung: 'Bachelor',
   beruf: 'Angestellt',
   haushalt: 2,
@@ -55,9 +56,11 @@ const STANDARD_PROFIL: ProfilDaten = {
 interface UmfrageFormularProps {
   onGenerieren: (profil: ProfilDaten) => void;
   laedt: boolean;
+  abstimmung: AbstimmungsTyp;
+  onAbstimmungWechseln: (wert: AbstimmungsTyp) => void;
 }
 
-export default function UmfrageFormular({ onGenerieren, laedt }: UmfrageFormularProps) {
+export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbstimmungWechseln }: UmfrageFormularProps) {
   const [profil, setProfil] = useState<ProfilDaten>(STANDARD_PROFIL);
 
   // Hilfsfunktion zum Aktualisieren eines einzelnen Felds
@@ -96,6 +99,17 @@ export default function UmfrageFormular({ onGenerieren, laedt }: UmfrageFormular
         </div>
 
         <form onSubmit={absenden} className="flex flex-col gap-8">
+          {/* Abstimmung wählen */}
+          <SegmentedControl
+            beschriftung="Abstimmung"
+            optionen={['Nachhaltigkeitsinitiative', 'Zivildienstgesetz']}
+            wert={abstimmung === 'nachhaltigkeitsinitiative' ? 'Nachhaltigkeitsinitiative' : 'Zivildienstgesetz'}
+            onChange={(v) =>
+              onAbstimmungWechseln(
+                v === 'Zivildienstgesetz' ? 'zivildienstgesetz' : 'nachhaltigkeitsinitiative'
+              )
+            }
+          />
           {/* Alter */}
           <Slider
             beschriftung="Alter"
@@ -136,6 +150,16 @@ export default function UmfrageFormular({ onGenerieren, laedt }: UmfrageFormular
             onChange={(v) => feldAktualisieren('kanton', v)}
             suchbar
             platzhalter="Kanton auswählen…"
+          />
+
+          {/* Wohnumgebung */}
+          <SegmentedControl
+            beschriftung="Wohnumgebung"
+            optionen={['Stadt', 'Agglomeration', 'Land']}
+            wert={profil.wohnumgebung}
+            onChange={(v) =>
+              feldAktualisieren('wohnumgebung', v as ProfilDaten['wohnumgebung'])
+            }
           />
 
           {/* Bildungsstand */}
