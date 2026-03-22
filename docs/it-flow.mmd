@@ -1,0 +1,70 @@
+sequenceDiagram
+    actor User as Nutzer
+    participant WS as WelcomeScreen
+    participant PG as page.tsx
+    participant SF as SurveyForm
+    participant RS as ResultScreen
+    participant API as /api/generate
+    participant PR as prompts.ts
+    participant AC as api-client.ts
+    participant AI as AI API
+
+    User->>WS: App öffnen
+    WS-->>User: Disclaimer anzeigen
+    User->>WS: Weiter klicken
+    WS->>PG: onWeiter()
+    PG->>SF: setSchritt('umfrage')
+
+    Note over SF: Demographische Daten eingeben
+    User->>SF: Alter / Geschlecht / Wohnumgebung
+    User->>SF: Bildung / Beruf / Haushaltsgrösse
+
+    Note over SF: Psychographische Daten eingeben
+    User->>SF: Politische Richtung (1-10)
+    User->>SF: Entscheidungsstil (1-10)
+    User->>SF: Risikobereitschaft (1-10)
+
+    User->>SF: Abstimmung wählen
+    User->>SF: Banner generieren klicken
+    SF->>PG: onGenerieren(profil)
+    PG->>PG: setSchritt('ergebnis') + setLaedt(true)
+    PG->>RS: Ladeanimation anzeigen
+
+    PG->>API: POST /api/generate {profil + abstimmung}
+
+    API->>API: Eingabe validieren
+
+    alt abstimmung = zivildienstgesetz
+        API->>PR: PROMPT_ZIVILDIENSTGESETZ
+    else abstimmung = nachhaltigkeitsinitiative
+        API->>PR: PROMPT_NACHHALTIGKEITSINITIATIVE
+    end
+
+    PR->>PR: promptAufbereiten(vorlage + profil)
+    Note over PR: Platzhalter ersetzen mit Profildaten
+    PR-->>API: Fertiger Prompt-String
+
+    API->>AC: bildGenerieren(prompt)
+
+    alt API_PROVIDER = openai
+        AC->>AI: OpenAI DALL-E 3 generieren
+        AI-->>AC: Base64 Bilddaten
+    else API_PROVIDER = gemini
+        AC->>AI: Google Gemini Imagen generieren
+        AI-->>AC: Base64 Bilddaten (inlineData)
+    end
+
+    AC-->>API: PNG Base64 Bild-URL
+    API-->>PG: HTTP 200 JSON mit bildUrl
+    PG->>PG: setBildUrl + setLaedt(false)
+    PG->>RS: bildUrl übergeben
+    RS-->>User: Generiertes Banner anzeigen
+
+    alt Bild herunterladen
+        User->>RS: Bild herunterladen klicken
+        RS->>User: PNG-Datei speichern
+    else Neue Eingabe
+        User->>RS: Neue Eingabe klicken
+        RS->>PG: onNeueEingabe()
+        PG->>SF: setSchritt('umfrage')
+    end

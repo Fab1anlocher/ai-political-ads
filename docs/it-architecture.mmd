@@ -1,0 +1,59 @@
+graph TB
+    subgraph Browser["🌐 Browser / Client"]
+        direction TB
+        subgraph ReactApp["Next.js React SPA"]
+            PG["page.tsx\nState Management\n(schritt, bildUrl, laedt, fehler, abstimmung)"]
+            subgraph Screens["Screens"]
+                WS["WelcomeScreen\nDisclaimer · Start-Button"]
+                SF["SurveyForm\nProfile Form"]
+                RS["ResultScreen\nImage Display · Download"]
+            end
+            subgraph UIComponents["UI Components"]
+                SL["Slider"]
+                DD["Dropdown"]
+                SC["SegmentedControl"]
+                ST["Stepper"]
+                BT["Button"]
+            end
+        end
+        WS -->|onWeiter| PG
+        SF -->|onGenerieren profil| PG
+        PG -->|bildUrl / laedt / fehler| RS
+        SF --- UIComponents
+    end
+
+    PG -->|"POST /api/generate\nbody: {profil, abstimmung}"| APIRT
+
+    subgraph Server["🖥️ Next.js Server"]
+        APIRT["/api/generate/route.ts\nInput Validation\nAbstimmung Selection"]
+        PR["lib/prompts.ts\nPrompt Templates\npromptAufbereiten()"]
+        AC["lib/api-client.ts\nbildGenerieren()\nProvider Routing"]
+        TY["lib/types.ts\nProfilDaten\nGenerierungsAntwort\nAbstimmungsTyp"]
+        APIRT -->|vorlage + profil| PR
+        PR -->|prepared prompt| AC
+        APIRT -.->|types| TY
+    end
+
+    AC -->|"API_PROVIDER=openai\nclient.images.generate()"| OAI
+    AC -->|"API_PROVIDER=gemini\nai.models.generateContent()"| GEM
+
+    subgraph ExternalAPIs["☁️ External AI APIs"]
+        OAI["OpenAI API\nDALL-E 3\n1024×1024px\nresponse_format: b64_json"]
+        GEM["Google Gemini API\nImagen Model\ninlineData base64 PNG"]
+    end
+
+    OAI -->|"data:image/png;base64,..."| AC
+    GEM -->|"data:image/png;base64,..."| AC
+    AC -->|"bildUrl (base64)"| APIRT
+    APIRT -->|"JSON { bildUrl }"| PG
+
+    subgraph EnvConfig["⚙️ Environment Config (.env.local)"]
+        ENV["API_KEY\nAPI_PROVIDER\nIMAGE_MODEL"]
+    end
+
+    AC -.->|reads| ENV
+
+    style Browser fill:#f0f7ff,stroke:#3b82f6,stroke-width:2px
+    style Server fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
+    style ExternalAPIs fill:#fef9c3,stroke:#ca8a04,stroke-width:2px
+    style EnvConfig fill:#fdf4ff,stroke:#9333ea,stroke-width:2px
