@@ -21,11 +21,21 @@ const BILDUNGSOPTIONEN = [
 ];
 
 const BERUFSOPTIONEN = [
-  'Angestellt',
+  'Vollzeitangestellt',
+  'Teilzeitangestellt',
   'Selbständig',
-  'Arbeitslos',
-  'Rentner/in',
+  'Rentner/Pensioniert',
+  'Hausfrau/-mann',
   'Student/in',
+  'Arbeitslos',
+];
+
+const SOZIALE_KLASSE_OPTIONEN = [
+  'Oberschicht',
+  'Obere Mittelschicht',
+  'Untere Mittelschicht',
+  'Arbeiterklasse',
+  'Unterschicht',
 ];
 
 // Standardwerte für das Formular
@@ -34,11 +44,11 @@ const STANDARD_PROFIL: ProfilDaten = {
   geschlecht: 'Männlich',
   wohnumgebung: 'Stadt',
   bildung: 'Bachelor',
-  beruf: 'Angestellt',
+  beruf: 'Vollzeitangestellt',
   haushalt: 2,
+  sozialeKlasse: 'Untere Mittelschicht',
   politik: 5,
-  entscheidungsstil: 5,
-  risikobereitschaft: 5,
+  entscheidungsstil: 'Eine Kombination aus beidem',
 };
 
 interface UmfrageFormularProps {
@@ -139,11 +149,21 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
 
           {/* Berufsstatus */}
           <Dropdown
-            beschriftung="Berufsstatus"
+            beschriftung="Sind Sie zurzeit erwerbstätig? Wenn ja, wie viele Stunden pro Woche?"
             optionen={BERUFSOPTIONEN}
             wert={profil.beruf}
             onChange={(v) =>
               feldAktualisieren('beruf', v as ProfilDaten['beruf'])
+            }
+          />
+
+          {/* Soziale Klasse */}
+          <Dropdown
+            beschriftung="Würden Sie sich eher der Oberschicht, der Mittelschicht oder der Unter- bzw. Arbeiterschicht zuordnen?"
+            optionen={SOZIALE_KLASSE_OPTIONEN}
+            wert={profil.sozialeKlasse}
+            onChange={(v) =>
+              feldAktualisieren('sozialeKlasse', v as ProfilDaten['sozialeKlasse'])
             }
           />
 
@@ -156,47 +176,26 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             onChange={(v) => feldAktualisieren('haushalt', v)}
           />
 
-          {/* Trennlinie */}
-          <div className="border-t border-neutral-100 pt-2">
-            <p className="text-xs text-neutral-400 mb-6">
-              Psychographisches Profil (Skala 1–10)
-            </p>
+          {/* Politische Richtung */}
+          <Slider
+            beschriftung="In politischen Angelegenheiten spricht man von «links» und «rechts». Wo würden Sie Ihre Ansichten auf dieser Skala einordnen, ganz allgemein gesprochen?"
+            min={1}
+            max={10}
+            wert={profil.politik}
+            onChange={(v) => feldAktualisieren('politik', v)}
+            linksBeschriftung="Sehr links"
+            rechtsBeschriftung="Sehr rechts"
+          />
 
-            {/* Politische Richtung */}
-            <div className="flex flex-col gap-8">
-              <Slider
-                beschriftung="Politische Richtung"
-                min={1}
-                max={10}
-                wert={profil.politik}
-                onChange={(v) => feldAktualisieren('politik', v)}
-                linksBeschriftung="Sehr links"
-                rechtsBeschriftung="Sehr rechts"
-              />
-
-              {/* Entscheidungsstil */}
-              <Slider
-                beschriftung="Entscheidungsstil"
-                min={1}
-                max={10}
-                wert={profil.entscheidungsstil}
-                onChange={(v) => feldAktualisieren('entscheidungsstil', v)}
-                linksBeschriftung="Emotional"
-                rechtsBeschriftung="Rational"
-              />
-
-              {/* Risikobereitschaft */}
-              <Slider
-                beschriftung="Risikobereitschaft"
-                min={1}
-                max={10}
-                wert={profil.risikobereitschaft}
-                onChange={(v) => feldAktualisieren('risikobereitschaft', v)}
-                linksBeschriftung="Sicherheitsorientiert"
-                rechtsBeschriftung="Risikofreudig"
-              />
-            </div>
-          </div>
+          {/* Entscheidungsstil */}
+          <SegmentedControl
+            beschriftung="Wenn ich wichtige Entscheidungen treffe, verlasse ich mich eher auf..."
+            optionen={['Fakten & Daten', 'Eine Kombination aus beidem', 'Bauchgefühl & Werte']}
+            wert={profil.entscheidungsstil}
+            onChange={(v) =>
+              feldAktualisieren('entscheidungsstil', v as ProfilDaten['entscheidungsstil'])
+            }
+          />
 
           {/* Absenden */}
           <div className="flex justify-center pt-4">

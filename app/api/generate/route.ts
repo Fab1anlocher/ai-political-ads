@@ -1,10 +1,16 @@
-// API Route Handler für die Bildgenerierung
-// Ruft je nach API_PROVIDER OpenAI oder Gemini auf
+// API Route Handler für die zweistufige Bildgenerierung
+// Stufe 1: Gemini Text-Modell + PDF-Argumentarium → Bildprompt
+// Stufe 2: Bildmodell → Banner
 
 import { NextRequest, NextResponse } from 'next/server';
-import { bildGenerieren } from '@/lib/api-client';
-import { promptAufbereiten, PROMPT_NACHHALTIGKEITSINITIATIVE, PROMPT_ZIVILDIENSTGESETZ } from '@/lib/prompts';
+import { bildGenerieren, bildPromptGenerieren } from '@/lib/api-client';
+import { stufe1PromptAufbereiten } from '@/lib/prompts';
+import { getPdfUri } from '@/lib/gemini-pdf';
 import { ProfilDaten, AbstimmungsTyp } from '@/lib/types';
+
+function abstimmungZuId(abstimmung: AbstimmungsTyp): 1 | 2 {
+  return abstimmung === 'nachhaltigkeitsinitiative' ? 1 : 2;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,22 +28,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Prompt je nach Abstimmung auswählen
-    const vorlage = abstimmung === 'zivildienstgesetz'
-      ? PROMPT_ZIVILDIENSTGESETZ
-      : PROMPT_NACHHALTIGKEITSINITIATIVE;
+    const initiativeId = abstimmungZuId(abstimmung ?? 'nachhaltigkeitsinitiative');
 
-    // Prompt mit Profildaten befüllen
-    const prompt = promptAufbereiten(vorlage, profil);
+    // PDF-URI holen (einmaliger Upload, danach cached)
+    const pdfUri = await getPdfUri(initiativeId);
 
-    // Bild generieren (API-Aufruf serverseitig)
-    const bildUrl = await bildGenerieren(prompt);
+    // Stufe 1: Bildprompt via Gemini Text-Modell + PDF generieren
+    const stage1Prompt = stufe1PromptAufbereiten(initiativeId, profil);
+    const bildPrompt = await bildPromptGenerieren(stage1Prompt, pdfUri);
+
+    // Stufe 2: Banner via Bildmodell generieren
+    const bildUrl = await bildGenerieren(bildPrompt);
 
     return NextResponse.json({ bildUrl });
   } catch (fehler) {
     console.error('[generate] Fehler:', fehler);
 
-    // Benutzerfreundliche Fehlermeldung auf Deutsch
     const nachricht =
       fehler instanceof Error
         ? fehler.message

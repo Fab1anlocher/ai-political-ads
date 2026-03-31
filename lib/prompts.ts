@@ -1,84 +1,68 @@
-// Prompt-Vorlagen für die politischen Werbebanner-Generierung
+// Prompt-Vorlagen für die zweistufige Banner-Generierung
+// Stufe 1: Gemini Text-Modell + PDF-Argumentarium → detaillierter Bildprompt
+// Stufe 2: Bildmodell + Bildprompt → Banner
 
-// Volksinitiative 1: «Keine 10-Millionen-Schweiz! (Nachhaltigkeitsinitiative)»
-export const PROMPT_NACHHALTIGKEITSINITIATIVE = `
-Du bist Spezialist für politische Kommunikation in der Schweiz.
-Du erhältst Profildaten einer Person aus einer Umfrage.
-Erstelle basierend auf diesen Daten einen fertig verwendbaren politischen
-Werbebanner für die JA-Kampagne zur Volksinitiative
-«Keine 10-Millionen-Schweiz! (Nachhaltigkeitsinitiative)».
+import { ProfilDaten } from './types';
 
-Der Banner soll sofort einsatzbereit sein als Instagram-Post
-(quadratisch, 1080x1080px).
+// ── Stufe-1-Prompts ───────────────────────────────────────────────────────────
+// Werden zusammen mit dem PDF-Argumentarium an das Gemini Text-Modell gesendet.
+// Das Modell gibt einen fertigen Bildprompt für das Image-Modell zurück.
 
-Du entscheidest eigenständig über Slogan, Bildsprache, Farbwelt,
-Typografie und Komposition – alles abgeleitet aus dem Profil der Person,
-sodass der Banner authentisch für diese Zielgruppe wirkt.
+const STUFE1_PROMPTS: Record<1 | 2, string> = {
+
+  1: `
+Du bist Spezialist für politische Kommunikation und Wahlwerbung in der Schweiz.
+Du erhältst ein Personenprofil und ein Argumentarium zur JA-Kampagne der Volksinitiative «Keine 10-Millionen-Schweiz! (Nachhaltigkeitsinitiative)».
+
+Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to-Image-Modell.
+Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, JA zu stimmen.
+Passe Slogan, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition eigenständig an das Profil an – jede Profildimension soll das visuelle Gesamtkonzept beeinflussen, sodass unterschiedliche Profile zu klar erkennbar verschiedenen Bannern führen und die Werbung effektiv wirkt.
+Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
 PROFIL:
-- Alter: {alter}
 - Geschlecht: {geschlecht}
+- Alter: {alter}
 - Wohnumgebung: {wohnumgebung}
 - Bildungsstand: {bildung}
 - Berufsstatus: {beruf}
 - Haushaltsgrösse: {haushalt} Personen
-- Politische Richtung: {politik}/10 (1=links, 10=rechts)
-- Entscheidungsstil: {entscheidungsstil}/10 (1=emotional, 10=rational)
-- Risikobereitschaft: {risikobereitschaft}/10 (1=sicherheitsorientiert, 10=risikofreudig)
+- Soziale Klasse: {sozialeKlasse}
+- Politische Orientierung: {politik}/10 (1 = links, 10 = rechts)
+- Entscheidungsstil: {entscheidungsstil}
 
-Wichtig: Nur Bildausgabe, kein Text als Antwort.
-`;
+Gib ausschliesslich den fertigen Bildgenerierungs-Prompt für das Text-to-Image-Modell zurück. In Deutsch, Max. 250 Wörter.
+Keine demografischen Labels oder Profilbegriffe im Prompt.
+  `.trim(),
 
-// Volksinitiative 2: Änderung des Zivildienstgesetzes
-export const PROMPT_ZIVILDIENSTGESETZ = `
-Du bist Spezialist für politische Kommunikation in der Schweiz.
-Du erhältst Profildaten einer Person aus einer Umfrage.
-Erstelle basierend auf diesen Daten einen fertig verwendbaren politischen
-Werbebanner für die Nein-Kampagne zur Volksabstimmung über die
-Änderung des Zivildienstgesetzes.
+  2: `
+Du bist Spezialist für politische Kommunikation und Wahlwerbung in der Schweiz.
+Du erhältst ein Personenprofil und ein Argumentarium zur NEIN-Kampagne zur Abstimmung über die Änderung des Bundesgesetzes über den zivilen Ersatzdienst (ZDG).
 
-Hintergrund: Die Vorlage sieht vor, dass Zivildienstleistende künftig
-länger Zivildienst leisten müssen (Faktor 1,5 statt bisher 1,1 gegenüber
-der Militärdienstzeit). Zudem sollen Einsatzbetriebe stärker reguliert
-und die Bedingungen für einen Wechsel vom Militär- zum Zivildienst
-verschärft werden.
-
-Der Banner soll sofort einsatzbereit sein als Instagram-Post
-(quadratisch, 1080x1080px).
-
-Du entscheidest eigenständig über Slogan, Bildsprache, Farbwelt,
-Typografie und Komposition – alles abgeleitet aus dem Profil der Person,
-sodass der Banner authentisch für diese Zielgruppe wirkt.
+Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to-Image-Modell.
+Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, NEIN zu stimmen.
+Passe Slogan, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition eigenständig an das Profil an – jede Profildimension soll das visuelle Gesamtkonzept beeinflussen, sodass unterschiedliche Profile zu klar erkennbar verschiedenen Bannern führen und die Werbung effektiv wirkt.
+Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
 PROFIL:
-- Alter: {alter}
 - Geschlecht: {geschlecht}
+- Alter: {alter}
 - Wohnumgebung: {wohnumgebung}
 - Bildungsstand: {bildung}
 - Berufsstatus: {beruf}
 - Haushaltsgrösse: {haushalt} Personen
-- Politische Richtung: {politik}/10 (1=links, 10=rechts)
-- Entscheidungsstil: {entscheidungsstil}/10 (1=emotional, 10=rational)
-- Risikobereitschaft: {risikobereitschaft}/10 (1=sicherheitsorientiert, 10=risikofreudig)
+- Soziale Klasse: {sozialeKlasse}
+- Politische Orientierung: {politik}/10 (1 = links, 10 = rechts)
+- Entscheidungsstil: {entscheidungsstil}
 
-Wichtig: Nur Bildausgabe, kein Text als Antwort.
-`;
+Gib ausschliesslich den fertigen Bildgenerierungs-Prompt für das Text-to-Image-Modell zurück. In Deutsch, Max. 250 Wörter.
+Keine demografischen Labels oder Profilbegriffe im Prompt.
+  `.trim(),
+};
 
-// Hilfsfunktion: Platzhalter im Prompt ersetzen
-export function promptAufbereiten(
-  vorlage: string,
-  profil: {
-    alter: number;
-    geschlecht: string;
-    wohnumgebung: string;
-    bildung: string;
-    beruf: string;
-    haushalt: number;
-    politik: number;
-    entscheidungsstil: number;
-    risikobereitschaft: number;
-  }
-): string {
+// ── Hilfsfunktionen ───────────────────────────────────────────────────────────
+
+/** Ersetzt alle Platzhalter im Prompt durch die Profildaten. */
+function promptAufbereiten(vorlage: string, profil: ProfilDaten): string {
   return vorlage
     .replace('{alter}', String(profil.alter))
     .replace('{geschlecht}', profil.geschlecht)
@@ -86,7 +70,15 @@ export function promptAufbereiten(
     .replace('{bildung}', profil.bildung)
     .replace('{beruf}', profil.beruf)
     .replace('{haushalt}', String(profil.haushalt))
+    .replace('{sozialeKlasse}', profil.sozialeKlasse)
     .replace('{politik}', String(profil.politik))
-    .replace('{entscheidungsstil}', String(profil.entscheidungsstil))
-    .replace('{risikobereitschaft}', String(profil.risikobereitschaft));
+    .replace('{entscheidungsstil}', profil.entscheidungsstil);
+}
+
+/** Bereitet den Stufe-1-Prompt für eine Initiative und ein Profil auf. */
+export function stufe1PromptAufbereiten(
+  initiativeId: 1 | 2,
+  profil: ProfilDaten
+): string {
+  return promptAufbereiten(STUFE1_PROMPTS[initiativeId], profil);
 }

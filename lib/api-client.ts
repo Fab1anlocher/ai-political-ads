@@ -1,63 +1,58 @@
-// API-Abstraktionsschicht: unterstützt OpenAI (DALL-E) und Google Gemini (Imagen)
-
-import OpenAI from 'openai';
 import { GoogleGenAI } from '@google/genai';
 
-// Umgebungsvariablen (serverseitig)
 const API_KEY = process.env.API_KEY ?? '';
-const API_PROVIDER = process.env.API_PROVIDER ?? 'openai';
-const IMAGE_MODEL = process.env.IMAGE_MODEL ?? 'dall-e-3';
+const IMAGE_MODEL = process.env.IMAGE_MODEL ?? 'gemini-3-pro-image-preview';
+const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL ?? 'gemini-2.5-flash';
+
+function getClient(): GoogleGenAI {
+  if (!API_KEY) throw new Error('API_KEY ist nicht konfiguriert.');
+  return new GoogleGenAI({ apiKey: API_KEY });
+}
 
 /**
- * Generiert ein politisches Werbebild anhand des aufbereiteten Prompts.
- * Gibt eine URL oder einen Base64-String zurück.
+ * Stufe 1: Liest das PDF-Argumentarium + Profil und erstellt einen Bildprompt.
  */
-export async function bildGenerieren(prompt: string): Promise<string> {
-  if (!API_KEY) {
-    throw new Error('API_KEY ist nicht konfiguriert.');
-  }
+export async function bildPromptGenerieren(
+  textPrompt: string,
+  pdfUri: string
+): Promise<string> {
+  const ai = getClient();
 
-  if (API_PROVIDER === 'gemini') {
-    return await geminibildGenerieren(prompt);
-  }
-
-  // Standard: OpenAI
-  return await openAiBildGenerieren(prompt);
-}
-
-/** Bildgenerierung via OpenAI DALL-E */
-async function openAiBildGenerieren(prompt: string): Promise<string> {
-  const client = new OpenAI({ apiKey: API_KEY });
-
-  const antwort = await client.images.generate({
-    model: IMAGE_MODEL,
-    prompt,
-    n: 1,
-    size: '1024x1024',
-    response_format: 'b64_json',
+  const antwort = await ai.models.generateContent({
+    model: GEMINI_TEXT_MODEL,
+    contents: [{
+      role: 'user',
+      parts: [
+        { fileData: { fileUri: pdfUri, mimeType: 'application/pdf' } },
+        { text: textPrompt },
+      ],
+    }],
   });
 
-  const b64 = antwort.data?.[0]?.b64_json;
-  if (!b64) {
-    throw new Error('Kein Bild von OpenAI erhalten.');
-  }
+  const text = antwort.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+  if (!text) throw new Error('Kein Bildprompt von Gemini erhalten (Stufe 1).');
 
-  return `data:image/png;base64,${b64}`;
+  return text;
 }
 
-/** Bildgenerierung via Google Gemini (generateContent API) */
-async function geminibildGenerieren(prompt: string): Promise<string> {
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
+/**
+ * Stufe 2: Generiert das Banner-Bild anhand des Bildprompts.
+ */
+export async function bildGenerieren(prompt: string): Promise<string> {
+  const ai = getClient();
 
   const antwort = await ai.models.generateContent({
     model: IMAGE_MODEL,
-    contents: prompt,
+    config: {
+      responseModalities: ['IMAGE', 'TEXT'],
+      imageConfig: { aspectRatio: '16:9' },
+    },
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
   });
 
   const teile = antwort.candidates?.[0]?.content?.parts ?? [];
-  if (!antwort.candidates?.[0]) {
-    throw new Error('Keine Kandidaten von Gemini erhalten.');
-  }
+  if (!antwort.candidates?.[0]) throw new Error('Keine Kandidaten von Gemini erhalten.');
+
   for (const teil of teile) {
     if (teil.inlineData?.data) {
       return `data:image/png;base64,${teil.inlineData.data}`;
