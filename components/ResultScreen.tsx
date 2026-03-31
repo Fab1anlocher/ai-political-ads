@@ -55,7 +55,7 @@ export default function ErgebnisScreen({
 
         {/* Ladeanimation */}
         {laedt && (
-          <div className="w-full aspect-square max-w-md rounded-2xl bg-neutral-100 flex items-center justify-center overflow-hidden">
+          <div className="w-full aspect-video max-w-2xl rounded-2xl bg-neutral-100 flex items-center justify-center overflow-hidden">
             <motion.div
               animate={{
                 scale: [1, 1.15, 1],
@@ -84,7 +84,7 @@ export default function ErgebnisScreen({
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full aspect-square max-w-md rounded-2xl overflow-hidden shadow-xl"
+            className="w-full aspect-video max-w-2xl rounded-2xl overflow-hidden shadow-xl"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
