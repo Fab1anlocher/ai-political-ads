@@ -25,7 +25,7 @@ const pdfUriCache: Record<1 | 2, string | null> = { 1: null, 2: null };
  */
 async function findExistingFile(genai: GoogleGenAI, displayName: string): Promise<string | null> {
   const now = new Date();
-  const lister = genai.files.list({ config: { pageSize: 100 } });
+  const lister = await genai.files.list({ config: { pageSize: 100 } });
 
   for await (const file of lister) {
     if (
