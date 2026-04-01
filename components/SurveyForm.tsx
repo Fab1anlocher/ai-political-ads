@@ -149,7 +149,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
 
           {/* Berufsstatus */}
           <Dropdown
-            beschriftung="Sind Sie zurzeit erwerbstätig? Wenn ja, wie viele Stunden pro Woche?"
+            beschriftung="Sind Sie zurzeit erwerbstätig?"
             optionen={BERUFSOPTIONEN}
             wert={profil.beruf}
             onChange={(v) =>
