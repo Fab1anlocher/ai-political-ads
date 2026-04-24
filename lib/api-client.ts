@@ -2,7 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 
 const API_KEY = process.env.API_KEY ?? '';
 const IMAGE_MODEL = process.env.IMAGE_MODEL ?? 'gemini-3-pro-image-preview';
-const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL ?? 'gemini-2.5-flash';
+const GEMINI_TEXT_MODEL = process.env.GEMINI_TEXT_MODEL ?? 'models/gemini-3-flash-preview';
 
 function getClient(): GoogleGenAI {
   if (!API_KEY) throw new Error('API_KEY ist nicht konfiguriert.');
