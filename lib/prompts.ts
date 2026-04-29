@@ -19,8 +19,8 @@ Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sei
 
 
 Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
-an das Profil an – nutze die Profildimensionen (Geschlecht, Altersgruppe, politische 
-Orientierung, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
+an das Profil an – nutze die Profildimensionen (Geschlecht, Alter, politische 
+Orientierung, Entscheidungsstil, Familienstand, Kinder, Informationsquellen, berufliches Umfeld) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
@@ -32,6 +32,10 @@ PROFIL:
 - Berufsstatus: {beruf}
 - Haushaltsgrösse: {haushalt} Personen
 - Soziale Klasse: {sozialeKlasse}
+- Familienstand: {familienstand}
+- Kinder: {kinder}
+- Informationsquellen: {informationsquellen}
+- Berufliches Umfeld: {beruflichesUmfeld}
 - Politische Orientierung: {politik}/10 (1 = links, 10 = rechts)
 - Entscheidungsstil: {entscheidungsstil}
 
@@ -47,7 +51,7 @@ Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to
 Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, NEIN zu stimmen.
 
 Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
-an das Profil an – nutze die Profildimensionen (Geschlecht, Altersgruppe, politische Orientierung, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
+an das Profil an – nutze die Profildimensionen (Geschlecht, Alter, politische Orientierung, Entscheidungsstil, Familienstand, Kinder, Informationsquellen, berufliches Umfeld) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
@@ -59,6 +63,10 @@ PROFIL:
 - Berufsstatus: {beruf}
 - Haushaltsgrösse: {haushalt} Personen
 - Soziale Klasse: {sozialeKlasse}
+- Familienstand: {familienstand}
+- Kinder: {kinder}
+- Informationsquellen: {informationsquellen}
+- Berufliches Umfeld: {beruflichesUmfeld}
 - Politische Orientierung: {politik}/10 (1 = links, 10 = rechts)
 - Entscheidungsstil: {entscheidungsstil}
 
@@ -70,6 +78,28 @@ Achte darauf das Profildaten und Seitenzahlen nicht im Bild erscheinen, sondern 
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 
 /** Ersetzt alle Platzhalter im Prompt durch die Profildaten. */
+const STANDARD_ANGABE = 'Keine Angabe';
+
+function wertOderStandard(wert?: string | number | null): string {
+  if (wert === undefined || wert === null || String(wert).trim() === '') {
+    return STANDARD_ANGABE;
+  }
+  return String(wert);
+}
+
+function informationsquellenFormatieren(profil: ProfilDaten): string {
+  const quellen = profil.informationsquellen ?? [];
+  if (quellen.length === 0) return STANDARD_ANGABE;
+
+  return quellen
+    .map((quelle) => {
+      if (quelle !== 'Sonstiges') return quelle;
+      const sonstiges = profil.informationsquellenSonstiges?.trim();
+      return sonstiges ? `Sonstiges: ${sonstiges}` : 'Sonstiges';
+    })
+    .join(', ');
+}
+
 function promptAufbereiten(vorlage: string, profil: ProfilDaten): string {
   return vorlage
     .replace('{alter}', String(profil.alter))
@@ -79,6 +109,10 @@ function promptAufbereiten(vorlage: string, profil: ProfilDaten): string {
     .replace('{beruf}', profil.beruf)
     .replace('{haushalt}', String(profil.haushalt))
     .replace('{sozialeKlasse}', profil.sozialeKlasse)
+    .replace('{familienstand}', wertOderStandard(profil.familienstand))
+    .replace('{kinder}', wertOderStandard(profil.kinder))
+    .replace('{informationsquellen}', informationsquellenFormatieren(profil))
+    .replace('{beruflichesUmfeld}', wertOderStandard(profil.beruflichesUmfeld))
     .replace('{politik}', String(profil.politik))
     .replace('{entscheidungsstil}', profil.entscheidungsstil);
 }

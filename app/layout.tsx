@@ -5,9 +5,9 @@ import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'KI-Werbebanner | Bachelor Thesis BFH',
+  title: 'KI-Banner-Generator | Bachelor Thesis BFH',
   description:
-    'Generiert KI-basierte politische Werbebanner basierend auf demographischen Angaben. Bachelor-Thesis Berner Fachhochschule.',
+    'Generiert KI-gestützte Werbebanner basierend auf demographischen Angaben. Bachelor-Thesis Berner Fachhochschule.',
 };
 
 export default function RootLayout({
