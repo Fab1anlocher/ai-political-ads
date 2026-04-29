@@ -7,6 +7,7 @@ interface MultiSelectProps {
   optionen: string[];
   werte: string[];
   onChange: (werte: string[]) => void;
+  platzhalter?: string;
 }
 
 export default function MultiSelect({
@@ -14,6 +15,7 @@ export default function MultiSelect({
   optionen,
   werte,
   onChange,
+  platzhalter = 'Auswählen…',
 }: MultiSelectProps) {
   function toggle(option: string) {
     const set = new Set(werte);
@@ -33,6 +35,9 @@ export default function MultiSelect({
       </label>
 
       <div className="flex flex-col gap-2">
+        {werte.length === 0 && (
+          <span className="text-sm text-neutral-400">{platzhalter}</span>
+        )}
         {optionen.map((opt) => {
           const aktiv = werte.includes(opt);
           return (

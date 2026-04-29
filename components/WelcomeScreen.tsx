@@ -35,9 +35,7 @@ export default function WillkommensScreen({ onWeiter }: WillkommensScreenProps) 
         transition={{ delay: 0.15, duration: 0.5 }}
         className="text-4xl sm:text-5xl font-semibold text-neutral-900 leading-tight tracking-tight mb-6"
       >
-        KI-Banner-
-        <br />
-        Generator
+        Ad Generator
       </motion.h1>
 
       {/* Disclaimer */}

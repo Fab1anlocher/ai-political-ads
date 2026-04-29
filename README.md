@@ -1,4 +1,4 @@
-# KI-Politische Werbebanner
+# Ad Generator
 
 > Bachelor Thesis – Berner Fachhochschule
 

@@ -63,13 +63,11 @@ const KINDER_OPTIONEN: KinderStatus[] = [
 const INFORMATIONSQUELLEN_OPTIONEN: Informationsquelle[] = [
   'Fernsehen',
   'Radio',
-  'Zeitung (Druckversion)',
-  'Zeitung (Online-Version)',
-  'Zeitschrift (Druckversion)',
-  'Zeitschrift (Online-Version)',
+  'Zeitung (Print)',
+  'Zeitung (Online)',
   'Internet-Blog',
   'Nachrichtenseite im Internet',
-  'Sonstiges',
+  'Social Media',
 ];
 
 const BERUFLICHES_UMFELD_OPTIONEN: BeruflichesUmfeld[] = [
@@ -86,14 +84,10 @@ const STANDARD_PROFIL: ProfilDaten = {
   alter: 35,
   geschlecht: 'Männlich',
   wohnumgebung: 'Stadt',
-  bildung: 'Bachelor',
-  beruf: 'Vollzeitangestellt',
   haushalt: 2,
-  sozialeKlasse: 'Untere Mittelschicht',
   politik: 5,
   entscheidungsstil: 'Eine Kombination aus beidem',
   informationsquellen: [],
-  informationsquellenSonstiges: '',
 };
 
 interface UmfrageFormularProps {
@@ -190,6 +184,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             onChange={(v) =>
               feldAktualisieren('bildung', v as ProfilDaten['bildung'])
             }
+            platzhalter="Auswählen…"
           />
 
           {/* Berufsstatus */}
@@ -200,6 +195,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             onChange={(v) =>
               feldAktualisieren('beruf', v as ProfilDaten['beruf'])
             }
+            platzhalter="Auswählen…"
           />
 
           {/* Soziale Klasse */}
@@ -210,6 +206,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             onChange={(v) =>
               feldAktualisieren('sozialeKlasse', v as ProfilDaten['sozialeKlasse'])
             }
+            platzhalter="Auswählen…"
           />
 
           {/* Haushaltsgrösse */}
@@ -225,7 +222,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Familienstand"
             optionen={FAMILIENSTAND_OPTIONEN}
-            wert={profil.familienstand ?? ''}
+            wert={profil.familienstand}
             onChange={(v) =>
               feldAktualisieren('familienstand', v as ProfilDaten['familienstand'])
             }
@@ -236,7 +233,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Kinder"
             optionen={KINDER_OPTIONEN}
-            wert={profil.kinder ?? ''}
+            wert={profil.kinder}
             onChange={(v) => feldAktualisieren('kinder', v as ProfilDaten['kinder'])}
             platzhalter="Auswählen…"
           />
@@ -246,36 +243,16 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             beschriftung="Informationsquellen zum politischen Geschehen"
             optionen={INFORMATIONSQUELLEN_OPTIONEN}
             werte={profil.informationsquellen ?? []}
-            onChange={(werte) => {
-              feldAktualisieren('informationsquellen', werte as ProfilDaten['informationsquellen']);
-              if (!werte.includes('Sonstiges')) {
-                feldAktualisieren('informationsquellenSonstiges', '');
-              }
-            }}
+            onChange={(werte) =>
+              feldAktualisieren('informationsquellen', werte as ProfilDaten['informationsquellen'])
+            }
           />
-
-          {profil.informationsquellen?.includes('Sonstiges') && (
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-neutral-700">
-                Sonstiges (Freitextfeld)
-              </label>
-              <input
-                type="text"
-                value={profil.informationsquellenSonstiges ?? ''}
-                onChange={(e) =>
-                  feldAktualisieren('informationsquellenSonstiges', e.target.value)
-                }
-                placeholder="Weitere Informationsquelle"
-                className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-              />
-            </div>
-          )}
 
           {/* Berufliches Umfeld */}
           <Dropdown
             beschriftung="Berufliches Umfeld / Branche"
             optionen={BERUFLICHES_UMFELD_OPTIONEN}
-            wert={profil.beruflichesUmfeld ?? ''}
+            wert={profil.beruflichesUmfeld}
             onChange={(v) =>
               feldAktualisieren('beruflichesUmfeld', v as ProfilDaten['beruflichesUmfeld'])
             }
