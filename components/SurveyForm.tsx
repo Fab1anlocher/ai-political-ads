@@ -180,7 +180,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Bildungsstand"
             optionen={BILDUNGSOPTIONEN}
-            wert={profil.bildung ?? ''}
+            wert={profil.bildung}
             onChange={(v) =>
               feldAktualisieren('bildung', v as ProfilDaten['bildung'])
             }
@@ -191,7 +191,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Sind Sie zurzeit erwerbstätig?"
             optionen={BERUFSOPTIONEN}
-            wert={profil.beruf ?? ''}
+            wert={profil.beruf}
             onChange={(v) =>
               feldAktualisieren('beruf', v as ProfilDaten['beruf'])
             }
@@ -202,7 +202,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Würden Sie sich eher der Oberschicht, der Mittelschicht oder der Unter- bzw. Arbeiterschicht zuordnen?"
             optionen={SOZIALE_KLASSE_OPTIONEN}
-            wert={profil.sozialeKlasse ?? ''}
+            wert={profil.sozialeKlasse}
             onChange={(v) =>
               feldAktualisieren('sozialeKlasse', v as ProfilDaten['sozialeKlasse'])
             }
@@ -222,7 +222,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Familienstand"
             optionen={FAMILIENSTAND_OPTIONEN}
-            wert={profil.familienstand ?? ''}
+            wert={profil.familienstand}
             onChange={(v) =>
               feldAktualisieren('familienstand', v as ProfilDaten['familienstand'])
             }
@@ -233,7 +233,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Kinder"
             optionen={KINDER_OPTIONEN}
-            wert={profil.kinder ?? ''}
+            wert={profil.kinder}
             onChange={(v) => feldAktualisieren('kinder', v as ProfilDaten['kinder'])}
             platzhalter="Auswählen…"
           />
@@ -252,7 +252,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           <Dropdown
             beschriftung="Berufliches Umfeld / Branche"
             optionen={BERUFLICHES_UMFELD_OPTIONEN}
-            wert={profil.beruflichesUmfeld ?? ''}
+            wert={profil.beruflichesUmfeld}
             onChange={(v) =>
               feldAktualisieren('beruflichesUmfeld', v as ProfilDaten['beruflichesUmfeld'])
             }

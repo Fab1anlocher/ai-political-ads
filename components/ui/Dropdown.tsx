@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from 'react';
 interface DropdownProps {
   beschriftung: string;
   optionen: string[];
-  wert: string;
+  wert?: string;
   onChange: (wert: string) => void;
   suchbar?: boolean;
   platzhalter?: string;
