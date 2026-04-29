@@ -4,12 +4,20 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ProfilDaten, AbstimmungsTyp } from '@/lib/types';
+import {
+  AbstimmungsTyp,
+  BeruflichesUmfeld,
+  Familienstand,
+  Informationsquelle,
+  KinderStatus,
+  ProfilDaten,
+} from '@/lib/types';
 import Slider from './ui/Slider';
 import Dropdown from './ui/Dropdown';
 import SegmentedControl from './ui/SegmentedControl';
 import Stepper from './ui/Stepper';
 import Button from './ui/Button';
+import MultiSelect from './ui/MultiSelect';
 
 
 const BILDUNGSOPTIONEN = [
@@ -38,6 +46,41 @@ const SOZIALE_KLASSE_OPTIONEN = [
   'Unterschicht',
 ];
 
+const FAMILIENSTAND_OPTIONEN: Familienstand[] = [
+  'Verheiratet',
+  'Verwitwet',
+  'Geschieden',
+  'Getrennt lebend',
+  'Nie verheiratet',
+];
+
+const KINDER_OPTIONEN: KinderStatus[] = [
+  'Ja, im eigenen Haushalt lebend',
+  'Ja, nicht im eigenen Haushalt lebend',
+  'Nein, keine Kinder',
+];
+
+const INFORMATIONSQUELLEN_OPTIONEN: Informationsquelle[] = [
+  'Fernsehen',
+  'Radio',
+  'Zeitung (Druckversion)',
+  'Zeitung (Online-Version)',
+  'Zeitschrift (Druckversion)',
+  'Zeitschrift (Online-Version)',
+  'Internet-Blog',
+  'Nachrichtenseite im Internet',
+  'Sonstiges',
+];
+
+const BERUFLICHES_UMFELD_OPTIONEN: BeruflichesUmfeld[] = [
+  'Privatwirtschaft',
+  'Öffentlicher Dienst / Verwaltung (Bund, Kanton, Gemeinde)',
+  'Non-Profit-Organisation (NGO / Stiftung)',
+  'Subventionierter Bereich (z.B. öffentlicher Verkehr, Spitäler)',
+  'Selbstständig / eigenes Unternehmen',
+  'Nicht erwerbstätig (Studium, Rente, Arbeitslosigkeit, Haushalt)',
+];
+
 // Standardwerte für das Formular
 const STANDARD_PROFIL: ProfilDaten = {
   alter: 35,
@@ -49,6 +92,8 @@ const STANDARD_PROFIL: ProfilDaten = {
   sozialeKlasse: 'Untere Mittelschicht',
   politik: 5,
   entscheidungsstil: 'Eine Kombination aus beidem',
+  informationsquellen: [],
+  informationsquellenSonstiges: '',
 };
 
 interface UmfrageFormularProps {
@@ -174,6 +219,67 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             min={1}
             max={6}
             onChange={(v) => feldAktualisieren('haushalt', v)}
+          />
+
+          {/* Familienstand */}
+          <Dropdown
+            beschriftung="Familienstand"
+            optionen={FAMILIENSTAND_OPTIONEN}
+            wert={profil.familienstand ?? ''}
+            onChange={(v) =>
+              feldAktualisieren('familienstand', v as ProfilDaten['familienstand'])
+            }
+            platzhalter="Auswählen…"
+          />
+
+          {/* Kinder */}
+          <Dropdown
+            beschriftung="Kinder"
+            optionen={KINDER_OPTIONEN}
+            wert={profil.kinder ?? ''}
+            onChange={(v) => feldAktualisieren('kinder', v as ProfilDaten['kinder'])}
+            platzhalter="Auswählen…"
+          />
+
+          {/* Informationsquellen */}
+          <MultiSelect
+            beschriftung="Informationsquellen zum politischen Geschehen"
+            optionen={INFORMATIONSQUELLEN_OPTIONEN}
+            werte={profil.informationsquellen ?? []}
+            onChange={(werte) => {
+              feldAktualisieren('informationsquellen', werte as ProfilDaten['informationsquellen']);
+              if (!werte.includes('Sonstiges')) {
+                feldAktualisieren('informationsquellenSonstiges', '');
+              }
+            }}
+          />
+
+          {profil.informationsquellen?.includes('Sonstiges') && (
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-neutral-700">
+                Sonstiges (Freitextfeld)
+              </label>
+              <input
+                type="text"
+                value={profil.informationsquellenSonstiges ?? ''}
+                onChange={(e) =>
+                  feldAktualisieren('informationsquellenSonstiges', e.target.value)
+                }
+                placeholder="Weitere Informationsquelle"
+                className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              />
+            </div>
+          )}
+
+          {/* Berufliches Umfeld */}
+          <Dropdown
+            beschriftung="Berufliches Umfeld / Branche"
+            optionen={BERUFLICHES_UMFELD_OPTIONEN}
+            wert={profil.beruflichesUmfeld ?? ''}
+            onChange={(v) =>
+              feldAktualisieren('beruflichesUmfeld', v as ProfilDaten['beruflichesUmfeld'])
+            }
+            platzhalter="Auswählen…"
           />
 
           {/* Politische Richtung */}
