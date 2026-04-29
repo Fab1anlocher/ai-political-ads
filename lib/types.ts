@@ -15,13 +15,11 @@ export type KinderStatus =
 export type Informationsquelle =
   | 'Fernsehen'
   | 'Radio'
-  | 'Zeitung (Druckversion)'
-  | 'Zeitung (Online-Version)'
-  | 'Zeitschrift (Druckversion)'
-  | 'Zeitschrift (Online-Version)'
+  | 'Zeitung (Print)'
+  | 'Zeitung (Online)'
   | 'Internet-Blog'
   | 'Nachrichtenseite im Internet'
-  | 'Sonstiges';
+  | 'Social Media';
 
 export type BeruflichesUmfeld =
   | 'Privatwirtschaft'
@@ -35,16 +33,15 @@ export interface ProfilDaten {
   alter: number;
   geschlecht: 'Männlich' | 'Weiblich' | 'Divers';
   wohnumgebung: 'Stadt' | 'Land' | 'Agglomeration';
-  bildung: 'Obligatorische Schule' | 'Berufslehre' | 'Matura' | 'Bachelor' | 'Master/Doktorat';
-  beruf: 'Vollzeitangestellt' | 'Teilzeitangestellt' | 'Selbständig' | 'Rentner/Pensioniert' | 'Hausfrau/-mann' | 'Student/in' | 'Arbeitslos';
+  bildung?: 'Obligatorische Schule' | 'Berufslehre' | 'Matura' | 'Bachelor' | 'Master/Doktorat';
+  beruf?: 'Vollzeitangestellt' | 'Teilzeitangestellt' | 'Selbständig' | 'Rentner/Pensioniert' | 'Hausfrau/-mann' | 'Student/in' | 'Arbeitslos';
   haushalt: number;
-  sozialeKlasse: 'Oberschicht' | 'Obere Mittelschicht' | 'Untere Mittelschicht' | 'Arbeiterklasse' | 'Unterschicht';
+  sozialeKlasse?: 'Oberschicht' | 'Obere Mittelschicht' | 'Untere Mittelschicht' | 'Arbeiterklasse' | 'Unterschicht';
   politik: number;        // 1–10 (1=links, 10=rechts)
   entscheidungsstil: 'Fakten & Daten' | 'Eine Kombination aus beidem' | 'Bauchgefühl & Werte';
   familienstand?: Familienstand;
   kinder?: KinderStatus;
   informationsquellen?: Informationsquelle[];
-  informationsquellenSonstiges?: string;
   beruflichesUmfeld?: BeruflichesUmfeld;
 }
 

@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'KI-Banner-Generator | Bachelor Thesis BFH',
+  title: 'Ad Generator | Bachelor Thesis BFH',
   description:
     'Generiert KI-gestützte Werbebanner basierend auf demographischen Angaben. Bachelor-Thesis Berner Fachhochschule.',
 };

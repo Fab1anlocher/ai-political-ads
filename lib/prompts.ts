@@ -24,20 +24,8 @@ Orientierung, Entscheidungsstil, Familienstand, Kinder, Informationsquellen, ber
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
-PROFIL:
-- Geschlecht: {geschlecht}
-- Alter: {alter}
-- Wohnumgebung: {wohnumgebung}
-- Bildungsstand: {bildung}
-- Berufsstatus: {beruf}
-- Haushaltsgrösse: {haushalt} Personen
-- Soziale Klasse: {sozialeKlasse}
-- Familienstand: {familienstand}
-- Kinder: {kinder}
-- Informationsquellen: {informationsquellen}
-- Berufliches Umfeld: {beruflichesUmfeld}
-- Politische Orientierung: {politik}/10 (1 = links, 10 = rechts)
-- Entscheidungsstil: {entscheidungsstil}
+    PROFIL:
+    {profil}
 
 Gib ausschliesslich den fertigen Bildgenerierungs-Prompt für das Text-to-Image-Modell zurück. Auf Deutsch, Max. 400 Wörter.
 Achte darauf das Profildaten und Seitenzahlen nicht im Bild erscheinen, sondern nur als Orientierung für die Gestaltung zu nutzen.
@@ -55,20 +43,8 @@ an das Profil an – nutze die Profildimensionen (Geschlecht, Alter, politische 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
-PROFIL:
-- Geschlecht: {geschlecht}
-- Alter: {alter}
-- Wohnumgebung: {wohnumgebung}
-- Bildungsstand: {bildung}
-- Berufsstatus: {beruf}
-- Haushaltsgrösse: {haushalt} Personen
-- Soziale Klasse: {sozialeKlasse}
-- Familienstand: {familienstand}
-- Kinder: {kinder}
-- Informationsquellen: {informationsquellen}
-- Berufliches Umfeld: {beruflichesUmfeld}
-- Politische Orientierung: {politik}/10 (1 = links, 10 = rechts)
-- Entscheidungsstil: {entscheidungsstil}
+    PROFIL:
+    {profil}
 
 Gib ausschliesslich den fertigen Bildgenerierungs-Prompt für das Text-to-Image-Modell zurück. Auf Deutsch, Max. 400 Wörter.
 Achte darauf das Profildaten und Seitenzahlen nicht im Bild erscheinen, sondern nur als Orientierung für die Gestaltung zu nutzen.
@@ -78,43 +54,49 @@ Achte darauf das Profildaten und Seitenzahlen nicht im Bild erscheinen, sondern 
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 
 /** Ersetzt alle Platzhalter im Prompt durch die Profildaten. */
-const STANDARD_ANGABE = 'Keine Angabe';
-
-function wertOderStandard(wert?: string | number | null): string {
-  if (wert === undefined || wert === null || String(wert).trim() === '') {
-    return STANDARD_ANGABE;
-  }
-  return String(wert);
+function informationsquellenFormatieren(
+  profil: ProfilDaten
+): string | undefined {
+  const quellen = profil.informationsquellen ?? [];
+  if (quellen.length === 0) return undefined;
+  return quellen.join(', ');
 }
 
-function informationsquellenFormatieren(profil: ProfilDaten): string {
-  const quellen = profil.informationsquellen ?? [];
-  if (quellen.length === 0) return STANDARD_ANGABE;
+function optionalZeile(
+  label: string,
+  wert?: string | number | null
+): string | null {
+  if (wert === undefined || wert === null || String(wert).trim() === '') {
+    return null;
+  }
+  return `- ${label}: ${wert}`;
+}
 
-  return quellen
-    .map((quelle) => {
-      if (quelle !== 'Sonstiges') return quelle;
-      const sonstiges = profil.informationsquellenSonstiges?.trim();
-      return sonstiges ? `Sonstiges: ${sonstiges}` : 'Sonstiges';
-    })
-    .join(', ');
+function profilAbschnittErstellen(profil: ProfilDaten): string {
+  const zeilen = [
+    `- Geschlecht: ${profil.geschlecht}`,
+    `- Alter: ${profil.alter}`,
+    `- Wohnumgebung: ${profil.wohnumgebung}`,
+    optionalZeile('Bildungsstand', profil.bildung),
+    optionalZeile('Berufsstatus', profil.beruf),
+    `- Haushaltsgrösse: ${profil.haushalt} Personen`,
+    optionalZeile('Soziale Klasse', profil.sozialeKlasse),
+    optionalZeile('Familienstand', profil.familienstand),
+    optionalZeile('Kinder', profil.kinder),
+    optionalZeile(
+      'Informationsquellen',
+      informationsquellenFormatieren(profil)
+    ),
+    optionalZeile('Berufliches Umfeld', profil.beruflichesUmfeld),
+    `- Politische Orientierung: ${profil.politik}/10 (1 = links, 10 = rechts)`,
+    `- Entscheidungsstil: ${profil.entscheidungsstil}`,
+  ];
+
+  return zeilen.filter((zeile): zeile is string => Boolean(zeile)).join('\n');
 }
 
 function promptAufbereiten(vorlage: string, profil: ProfilDaten): string {
-  return vorlage
-    .replace('{alter}', String(profil.alter))
-    .replace('{geschlecht}', profil.geschlecht)
-    .replace('{wohnumgebung}', profil.wohnumgebung)
-    .replace('{bildung}', profil.bildung)
-    .replace('{beruf}', profil.beruf)
-    .replace('{haushalt}', String(profil.haushalt))
-    .replace('{sozialeKlasse}', profil.sozialeKlasse)
-    .replace('{familienstand}', wertOderStandard(profil.familienstand))
-    .replace('{kinder}', wertOderStandard(profil.kinder))
-    .replace('{informationsquellen}', informationsquellenFormatieren(profil))
-    .replace('{beruflichesUmfeld}', wertOderStandard(profil.beruflichesUmfeld))
-    .replace('{politik}', String(profil.politik))
-    .replace('{entscheidungsstil}', profil.entscheidungsstil);
+  return vorlage.replace('{profil}', profilAbschnittErstellen(profil));
 }
 
 /** Bereitet den Stufe-1-Prompt für eine Initiative und ein Profil auf. */
