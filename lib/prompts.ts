@@ -18,7 +18,7 @@ Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to
 Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, JA zu stimmen.
 
 
-Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
+Passe Slogan, Tonalität, Typografie, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
 an das Profil an – nutze die Profildimensionen (Geschlecht, Alter, politische 
 Orientierung, Entscheidungsstil, Familienstand, Kinder, Informationsquellen, berufliches Umfeld) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
