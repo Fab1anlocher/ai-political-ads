@@ -24,7 +24,7 @@ Tragen Sie Ihren API-Schlüssel in `.env.local` ein:
 ```env
 API_KEY=dein_api_key_hier
 API_PROVIDER=openai          # "openai" oder "gemini"
-IMAGE_MODEL=dall-e-3          # z.B. "dall-e-3" oder "imagen-3.0-generate-002"
+IMAGE_MODEL=dall-e-3          # z.B. "dall-e-3" oder "models/gemini-3-pro-image-preview"
 ```
 
 ### 3. Entwicklungsserver starten
