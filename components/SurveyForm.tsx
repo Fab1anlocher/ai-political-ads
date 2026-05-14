@@ -7,25 +7,25 @@ import { motion } from 'framer-motion';
 import {
   AbstimmungsTyp,
   BeruflichesUmfeld,
-  Familienstand,
+  Individualismus,
   Informationsquelle,
   KinderStatus,
+  ParteiPraeferenz,
   ProfilDaten,
 } from '@/lib/types';
 import Slider from './ui/Slider';
 import Dropdown from './ui/Dropdown';
 import SegmentedControl from './ui/SegmentedControl';
-import Stepper from './ui/Stepper';
 import Button from './ui/Button';
 import MultiSelect from './ui/MultiSelect';
 
 
 const BILDUNGSOPTIONEN = [
   'Obligatorische Schule',
-  'Berufslehre',
-  'Matura',
-  'Bachelor',
-  'Master/Doktorat',
+  'Berufsbildung (Lehre)',
+  'Allgemeinbildende Schule (Fachmaturität / Gymnasiale Maturität)',
+  'Höhere Berufsbildung (z.B. HF)',
+  'Hochschule (Bachelor / Master Doktor)',
 ];
 
 const BERUFSOPTIONEN = [
@@ -46,14 +46,6 @@ const SOZIALE_KLASSE_OPTIONEN = [
   'Unterschicht',
 ];
 
-const FAMILIENSTAND_OPTIONEN: Familienstand[] = [
-  'Verheiratet',
-  'Verwitwet',
-  'Geschieden',
-  'Getrennt lebend',
-  'Nie verheiratet',
-];
-
 const KINDER_OPTIONEN: KinderStatus[] = [
   'Ja, im eigenen Haushalt lebend',
   'Ja, nicht im eigenen Haushalt lebend',
@@ -63,20 +55,48 @@ const KINDER_OPTIONEN: KinderStatus[] = [
 const INFORMATIONSQUELLEN_OPTIONEN: Informationsquelle[] = [
   'Fernsehen',
   'Radio',
-  'Zeitung (Print)',
-  'Zeitung (Online)',
-  'Internet-Blog',
-  'Nachrichtenseite im Internet',
+  'Zeitung (Print oder Online)',
+  'Podcasts',
   'Social Media',
 ];
 
 const BERUFLICHES_UMFELD_OPTIONEN: BeruflichesUmfeld[] = [
-  'Privatwirtschaft',
-  'Öffentlicher Dienst / Verwaltung (Bund, Kanton, Gemeinde)',
-  'Non-Profit-Organisation (NGO / Stiftung)',
-  'Subventionierter Bereich (z.B. öffentlicher Verkehr, Spitäler)',
-  'Selbstständig / eigenes Unternehmen',
-  'Nicht erwerbstätig (Studium, Rente, Arbeitslosigkeit, Haushalt)',
+  'Landwirtschaft & Forstwirtschaft',
+  'Energie & Versorgung (Strom, Wasser, Entsorgung)',
+  'Industrie / Produktion',
+  'Bauwesen / Infrastruktur',
+  'Handel / Verkauf (Detail- & Grosshandel)',
+  'Transport & Logistik',
+  'Gastgewerbe / Tourismus',
+  'Informationstechnologie / Telekommunikation',
+  'Medien / Kommunikation / Marketing',
+  'Finanzwesen / Versicherung',
+  'Immobilien',
+  'Gesundheitswesen / Soziales',
+  'Bildung / Forschung',
+  'Öffentliche Verwaltung / Verwaltung',
+  'Kultur / Sport / Freizeit',
+  'Andere',
+];
+
+const PARTEI_OPTIONEN: ParteiPraeferenz[] = [
+  'SVP',
+  'SP',
+  'Die Mitte',
+  'FDP',
+  'Grüne',
+  'GLP',
+  'EVP',
+  'Andere',
+  'Keine Angabe',
+];
+
+const INDIVIDUALISMUS_OPTIONEN: Individualismus[] = [
+  'Eigenverantwortung und persönliche Freiheit',
+  'Eher Eigenverantwortung',
+  'Ausgewogen',
+  'Eher Gemeinschaft und Solidarität',
+  'Gemeinschaft und Solidarität',
 ];
 
 // Standardwerte für das Formular
@@ -84,10 +104,13 @@ const STANDARD_PROFIL: ProfilDaten = {
   alter: 35,
   geschlecht: 'Männlich',
   wohnumgebung: 'Stadt',
-  haushalt: 2,
   politik: 5,
   entscheidungsstil: 'Eine Kombination aus beidem',
   informationsquellen: [],
+  parteiPraeferenz: 'Keine Angabe',
+  individualismus: 'Ausgewogen',
+  traditionFortschritt: 4,
+  risikobereitschaft: 4,
 };
 
 interface UmfrageFormularProps {
@@ -178,7 +201,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
 
           {/* Bildungsstand */}
           <Dropdown
-            beschriftung="Bildungsstand"
+            beschriftung="Was ist Ihr höchster abgeschlossener Bildungsabschluss?"
             optionen={BILDUNGSOPTIONEN}
             wert={profil.bildung}
             onChange={(v) =>
@@ -209,26 +232,6 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             platzhalter="Auswählen…"
           />
 
-          {/* Haushaltsgrösse */}
-          <Stepper
-            beschriftung="Haushaltsgrösse"
-            wert={profil.haushalt}
-            min={1}
-            max={6}
-            onChange={(v) => feldAktualisieren('haushalt', v)}
-          />
-
-          {/* Familienstand */}
-          <Dropdown
-            beschriftung="Familienstand"
-            optionen={FAMILIENSTAND_OPTIONEN}
-            wert={profil.familienstand}
-            onChange={(v) =>
-              feldAktualisieren('familienstand', v as ProfilDaten['familienstand'])
-            }
-            platzhalter="Auswählen…"
-          />
-
           {/* Kinder */}
           <Dropdown
             beschriftung="Kinder"
@@ -240,7 +243,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
 
           {/* Informationsquellen */}
           <MultiSelect
-            beschriftung="Informationsquellen zum politischen Geschehen"
+            beschriftung="Aus welchen Quellen informieren Sie sich über das politische Geschehen?"
             optionen={INFORMATIONSQUELLEN_OPTIONEN}
             werte={profil.informationsquellen ?? []}
             onChange={(werte) =>
@@ -268,6 +271,50 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             onChange={(v) => feldAktualisieren('politik', v)}
             linksBeschriftung="Sehr links"
             rechtsBeschriftung="Sehr rechts"
+          />
+
+          {/* Parteipräferenz */}
+          <Dropdown
+            beschriftung="Welche Partei würden Sie wählen, wenn morgen Nationalratswahlen wären?"
+            optionen={PARTEI_OPTIONEN}
+            wert={profil.parteiPraeferenz}
+            onChange={(v) =>
+              feldAktualisieren('parteiPraeferenz', v as ProfilDaten['parteiPraeferenz'])
+            }
+            platzhalter="Auswählen…"
+          />
+
+          {/* Individualismus vs. Kollektivismus */}
+          <Dropdown
+            beschriftung="Was ist Ihnen wichtiger?"
+            optionen={INDIVIDUALISMUS_OPTIONEN}
+            wert={profil.individualismus}
+            onChange={(v) =>
+              feldAktualisieren('individualismus', v as ProfilDaten['individualismus'])
+            }
+            platzhalter="Auswählen…"
+          />
+
+          {/* Tradition vs Fortschritt */}
+          <Slider
+            beschriftung="Was beschreibt Sie besser?"
+            min={1}
+            max={7}
+            wert={profil.traditionFortschritt}
+            onChange={(v) => feldAktualisieren('traditionFortschritt', v)}
+            linksBeschriftung="Tradition und Bewährtes erhalten"
+            rechtsBeschriftung="Neues und Fortschritt vorantreiben"
+          />
+
+          {/* Risikobereitschaft */}
+          <Slider
+            beschriftung="Wie risikobereit sind Sie generell?"
+            min={1}
+            max={7}
+            wert={profil.risikobereitschaft}
+            onChange={(v) => feldAktualisieren('risikobereitschaft', v)}
+            linksBeschriftung="Gar nicht risikobereit"
+            rechtsBeschriftung="Sehr risikobereit"
           />
 
           {/* Entscheidungsstil */}
