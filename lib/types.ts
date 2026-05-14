@@ -26,7 +26,7 @@ export type BeruflichesUmfeld =
   | 'Immobilien'
   | 'Gesundheitswesen / Soziales'
   | 'Bildung / Forschung'
-  | 'Öffentliche Verwaltung / Verwaltung'
+  | 'Öffentliche Verwaltung'
   | 'Kultur / Sport / Freizeit'
   | 'Andere';
 

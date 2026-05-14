@@ -74,7 +74,7 @@ const BERUFLICHES_UMFELD_OPTIONEN: BeruflichesUmfeld[] = [
   'Immobilien',
   'Gesundheitswesen / Soziales',
   'Bildung / Forschung',
-  'Öffentliche Verwaltung / Verwaltung',
+  'Öffentliche Verwaltung',
   'Kultur / Sport / Freizeit',
   'Andere',
 ];

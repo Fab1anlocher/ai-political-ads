@@ -101,7 +101,7 @@ function profilAbschnittErstellen(profil: ProfilDaten): string {
       'Parteipräferenz',
       parteiPraeferenzFormatieren(profil)
     ),
-    `- Individualismus vs. Kollektivismus: ${profil.individualismus}`,
+    `- Individualismus/Kollektivismus: ${profil.individualismus}`,
     `- Tradition/Fortschritt: ${profil.traditionFortschritt}/7 (1 = Tradition, 7 = Fortschritt)`,
     `- Risikobereitschaft: ${profil.risikobereitschaft}/7 (1 = gar nicht, 7 = sehr)`,
     `- Entscheidungsstil: ${profil.entscheidungsstil}`,
