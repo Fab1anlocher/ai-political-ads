@@ -57,7 +57,7 @@ export interface ProfilDaten {
     | 'Berufsbildung (Lehre)'
     | 'Allgemeinbildende Schule (Fachmaturität / Gymnasiale Maturität)'
     | 'Höhere Berufsbildung (z.B. HF)'
-    | 'Hochschule (Bachelor / Master Doktor)';
+    | 'Hochschule (Bachelor / Master / Doktor)';
   beruf?: 'Vollzeitangestellt' | 'Teilzeitangestellt' | 'Selbständig' | 'Rentner/Pensioniert' | 'Hausfrau/-mann' | 'Student/in' | 'Arbeitslos';
   sozialeKlasse?: 'Oberschicht' | 'Obere Mittelschicht' | 'Untere Mittelschicht' | 'Arbeiterklasse' | 'Unterschicht';
   politik: number;        // 1–10 (1=links, 10=rechts)

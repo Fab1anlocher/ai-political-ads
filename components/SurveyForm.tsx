@@ -25,7 +25,7 @@ const BILDUNGSOPTIONEN = [
   'Berufsbildung (Lehre)',
   'Allgemeinbildende Schule (Fachmaturität / Gymnasiale Maturität)',
   'Höhere Berufsbildung (z.B. HF)',
-  'Hochschule (Bachelor / Master Doktor)',
+  'Hochschule (Bachelor / Master / Doktor)',
 ];
 
 const BERUFSOPTIONEN = [
