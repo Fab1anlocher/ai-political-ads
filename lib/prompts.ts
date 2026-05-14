@@ -19,8 +19,9 @@ Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sei
 
 
 Passe Slogan, Tonalität, Typografie, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
-an das Profil an – nutze die Profildimensionen (Geschlecht, Alter, politische 
-Orientierung, Entscheidungsstil, Familienstand, Kinder, Informationsquellen, berufliches Umfeld) als Orientierung und gewichte sie so, dass die 
+an das Profil an – nutze die Profildimensionen
+(Geschlecht, Alter, Wohnumgebung, Bildungsstand, Berufsstatus, soziale Schicht, Kinder, Informationsquellen, berufliches Umfeld/Branche, politische 
+Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
@@ -39,7 +40,8 @@ Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to
 Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, NEIN zu stimmen.
 
 Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
-an das Profil an – nutze die Profildimensionen (Geschlecht, Alter, politische Orientierung, Entscheidungsstil, Familienstand, Kinder, Informationsquellen, berufliches Umfeld) als Orientierung und gewichte sie so, dass die 
+an das Profil an – nutze die Profildimensionen
+(Geschlecht, Alter, Wohnumgebung, Bildungsstand, Berufsstatus, soziale Schicht, Kinder, Informationsquellen, berufliches Umfeld/Branche, politische Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
@@ -62,6 +64,14 @@ function informationsquellenFormatieren(
   return quellen.join(', ');
 }
 
+function parteiPraeferenzFormatieren(
+  profil: ProfilDaten
+): string | undefined {
+  return profil.parteiPraeferenz === 'Keine Angabe'
+    ? undefined
+    : profil.parteiPraeferenz;
+}
+
 function optionalZeile(
   label: string,
   wert?: string | number | null
@@ -79,16 +89,21 @@ function profilAbschnittErstellen(profil: ProfilDaten): string {
     `- Wohnumgebung: ${profil.wohnumgebung}`,
     optionalZeile('Bildungsstand', profil.bildung),
     optionalZeile('Berufsstatus', profil.beruf),
-    `- Haushaltsgrösse: ${profil.haushalt} Personen`,
     optionalZeile('Soziale Klasse', profil.sozialeKlasse),
-    optionalZeile('Familienstand', profil.familienstand),
     optionalZeile('Kinder', profil.kinder),
     optionalZeile(
       'Informationsquellen',
       informationsquellenFormatieren(profil)
     ),
-    optionalZeile('Berufliches Umfeld', profil.beruflichesUmfeld),
+    optionalZeile('Berufliches Umfeld / Branche', profil.beruflichesUmfeld),
     `- Politische Orientierung: ${profil.politik}/10 (1 = links, 10 = rechts)`,
+    optionalZeile(
+      'Parteipräferenz',
+      parteiPraeferenzFormatieren(profil)
+    ),
+    `- Individualismus/Kollektivismus: ${profil.individualismus}`,
+    `- Tradition/Fortschritt: ${profil.traditionFortschritt}/7 (1 = Tradition, 7 = Fortschritt)`,
+    `- Risikobereitschaft: ${profil.risikobereitschaft}/7 (1 = gar nicht, 7 = sehr)`,
     `- Entscheidungsstil: ${profil.entscheidungsstil}`,
   ];
 
