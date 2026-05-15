@@ -5,7 +5,9 @@ export type Informationsquelle =
   | 'Radio'
   | 'Zeitung (Print oder Online)'
   | 'Podcasts'
-  | 'Social Media';
+  | 'Social Media'
+  | 'Freunde / Familie / Gespräche mit anderen'
+  | 'Gar nicht / Ich informiere mich nicht über politisches Geschehen';
 
 export type ParteiPraeferenz =
   | 'SVP'

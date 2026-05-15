@@ -40,6 +40,8 @@ const INFORMATIONSQUELLEN_OPTIONEN: Informationsquelle[] = [
   'Zeitung (Print oder Online)',
   'Podcasts',
   'Social Media',
+  'Freunde / Familie / Gespräche mit anderen',
+  'Gar nicht / Ich informiere mich nicht über politisches Geschehen',
 ];
 
 const PARTEI_OPTIONEN: ParteiPraeferenz[] = [
@@ -186,7 +188,7 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
 
           {/* Informationsquellen */}
           <MultiSelect
-            beschriftung="Aus welchen Quellen informieren Sie sich über das politische Geschehen?"
+            beschriftung="Aus welchen Quellen informieren Sie sich über das politische Geschehen? (Mehrfachauswahl möglich)"
             optionen={INFORMATIONSQUELLEN_OPTIONEN}
             werte={profil.informationsquellen ?? []}
             onChange={(werte) =>
