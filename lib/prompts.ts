@@ -17,15 +17,13 @@ Du erhältst ein Personenprofil und ein Argumentarium zur JA-Kampagne der Volksi
 Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to-Image-Modell.
 Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, JA zu stimmen. Der Banner enthält einen klaren, profilangepassten Call-to-Action (z.B. «Jetzt JA stimmen», oder "Ja zur Iniatitive")
 
-
-Passe Slogan, Tonalität, Typografie, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
-an das Profil an – nutze die Profildimensionen
+Passe Slogan, Tonalität, Typografie, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition an das Profil an – nutze die Profildimensionen
 (Geschlecht, Alter, Wohnumgebung, Bildungsstand, soziale Schicht, Informationsquellen, politische 
 Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
-Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
+Stütze dich inhaltlich ausschliesslich auf das beigefügte Argumentarium und greife daraus gezielt jene Argumente auf, die für dieses Profil am überzeugendsten wirken.
 
-    PROFIL:
+    Profil der Person:
     {profil}
 
 Gib ausschliesslich den fertigen Bildgenerierungs-Prompt für das Text-to-Image-Modell zurück. Auf Deutsch, Max. 400 Wörter.
@@ -43,7 +41,7 @@ Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildspr
 an das Profil an – nutze die Profildimensionen
 (Geschlecht, Alter, Wohnumgebung, Bildungsstand, soziale Schicht, Informationsquellen, politische Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
-Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
+Stütze dich inhaltlich ausschliesslich auf das beigefügte Argumentarium und greife daraus gezielt jene Argumente auf, die für dieses Profil am überzeugendsten wirken.
 
     PROFIL:
     {profil}
