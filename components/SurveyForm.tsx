@@ -6,10 +6,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   AbstimmungsTyp,
-  BeruflichesUmfeld,
   Individualismus,
   Informationsquelle,
-  KinderStatus,
   ParteiPraeferenz,
   ProfilDaten,
 } from '@/lib/types';
@@ -28,16 +26,6 @@ const BILDUNGSOPTIONEN = [
   'Hochschule (Bachelor / Master / Doktor)',
 ];
 
-const BERUFSOPTIONEN = [
-  'Vollzeitangestellt',
-  'Teilzeitangestellt',
-  'Selbständig',
-  'Rentner/Pensioniert',
-  'Hausfrau/-mann',
-  'Student/in',
-  'Arbeitslos',
-];
-
 const SOZIALE_KLASSE_OPTIONEN = [
   'Oberschicht',
   'Obere Mittelschicht',
@@ -46,37 +34,12 @@ const SOZIALE_KLASSE_OPTIONEN = [
   'Unterschicht',
 ];
 
-const KINDER_OPTIONEN: KinderStatus[] = [
-  'Ja, im eigenen Haushalt lebend',
-  'Ja, nicht im eigenen Haushalt lebend',
-  'Nein, keine Kinder',
-];
-
 const INFORMATIONSQUELLEN_OPTIONEN: Informationsquelle[] = [
   'Fernsehen',
   'Radio',
   'Zeitung (Print oder Online)',
   'Podcasts',
   'Social Media',
-];
-
-const BERUFLICHES_UMFELD_OPTIONEN: BeruflichesUmfeld[] = [
-  'Landwirtschaft & Forstwirtschaft',
-  'Energie & Versorgung (Strom, Wasser, Entsorgung)',
-  'Industrie / Produktion',
-  'Bauwesen / Infrastruktur',
-  'Handel / Verkauf (Detail- & Grosshandel)',
-  'Transport & Logistik',
-  'Gastgewerbe / Tourismus',
-  'Informationstechnologie / Telekommunikation',
-  'Medien / Kommunikation / Marketing',
-  'Finanzwesen / Versicherung',
-  'Immobilien',
-  'Gesundheitswesen / Soziales',
-  'Bildung / Forschung',
-  'Öffentliche Verwaltung',
-  'Kultur / Sport / Freizeit',
-  'Andere',
 ];
 
 const PARTEI_OPTIONEN: ParteiPraeferenz[] = [
@@ -210,17 +173,6 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             platzhalter="Auswählen…"
           />
 
-          {/* Berufsstatus */}
-          <Dropdown
-            beschriftung="Sind Sie zurzeit erwerbstätig?"
-            optionen={BERUFSOPTIONEN}
-            wert={profil.beruf}
-            onChange={(v) =>
-              feldAktualisieren('beruf', v as ProfilDaten['beruf'])
-            }
-            platzhalter="Auswählen…"
-          />
-
           {/* Soziale Klasse */}
           <Dropdown
             beschriftung="Würden Sie sich eher der Oberschicht, der Mittelschicht oder der Unter- bzw. Arbeiterschicht zuordnen?"
@@ -232,15 +184,6 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             platzhalter="Auswählen…"
           />
 
-          {/* Kinder */}
-          <Dropdown
-            beschriftung="Kinder"
-            optionen={KINDER_OPTIONEN}
-            wert={profil.kinder}
-            onChange={(v) => feldAktualisieren('kinder', v as ProfilDaten['kinder'])}
-            platzhalter="Auswählen…"
-          />
-
           {/* Informationsquellen */}
           <MultiSelect
             beschriftung="Aus welchen Quellen informieren Sie sich über das politische Geschehen?"
@@ -249,17 +192,6 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
             onChange={(werte) =>
               feldAktualisieren('informationsquellen', werte as ProfilDaten['informationsquellen'])
             }
-          />
-
-          {/* Berufliches Umfeld */}
-          <Dropdown
-            beschriftung="Berufliches Umfeld / Branche"
-            optionen={BERUFLICHES_UMFELD_OPTIONEN}
-            wert={profil.beruflichesUmfeld}
-            onChange={(v) =>
-              feldAktualisieren('beruflichesUmfeld', v as ProfilDaten['beruflichesUmfeld'])
-            }
-            platzhalter="Auswählen…"
           />
 
           {/* Politische Richtung */}

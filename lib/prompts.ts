@@ -20,7 +20,7 @@ Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sei
 
 Passe Slogan, Tonalität, Typografie, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
 an das Profil an – nutze die Profildimensionen
-(Geschlecht, Alter, Wohnumgebung, Bildungsstand, Berufsstatus, soziale Schicht, Kinder, Informationsquellen, berufliches Umfeld/Branche, politische 
+(Geschlecht, Alter, Wohnumgebung, Bildungsstand, soziale Schicht, Informationsquellen, politische 
 Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
@@ -41,7 +41,7 @@ Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sei
 
 Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
 an das Profil an – nutze die Profildimensionen
-(Geschlecht, Alter, Wohnumgebung, Bildungsstand, Berufsstatus, soziale Schicht, Kinder, Informationsquellen, berufliches Umfeld/Branche, politische Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
+(Geschlecht, Alter, Wohnumgebung, Bildungsstand, soziale Schicht, Informationsquellen, politische Orientierung, Parteipräferenz, Individualismus/Kollektivismus, Tradition/Fortschritt, Risikobereitschaft, Entscheidungsstil) als Orientierung und gewichte sie so, dass die 
 Kombination für diese konkrete Person maximal überzeugend wirkt. Unterschiedliche Profile sollen zu klar verschiedenen Bannern führen.
 Nutze das beigefügte Argumentarium als einzige Quelle – wähle konkrete Argumente die für dieses Profil am überzeugendsten wirken und baue sie inhaltlich ein.
 
@@ -88,14 +88,11 @@ function profilAbschnittErstellen(profil: ProfilDaten): string {
     `- Alter: ${profil.alter}`,
     `- Wohnumgebung: ${profil.wohnumgebung}`,
     optionalZeile('Bildungsstand', profil.bildung),
-    optionalZeile('Berufsstatus', profil.beruf),
     optionalZeile('Soziale Klasse', profil.sozialeKlasse),
-    optionalZeile('Kinder', profil.kinder),
     optionalZeile(
       'Informationsquellen',
       informationsquellenFormatieren(profil)
     ),
-    optionalZeile('Berufliches Umfeld / Branche', profil.beruflichesUmfeld),
     `- Politische Orientierung: ${profil.politik}/10 (1 = links, 10 = rechts)`,
     optionalZeile(
       'Parteipräferenz',
