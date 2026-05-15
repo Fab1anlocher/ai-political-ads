@@ -15,7 +15,7 @@ Du bist Spezialist für politische Kommunikation und Wahlwerbung in der Schweiz.
 Du erhältst ein Personenprofil und ein Argumentarium zur JA-Kampagne der Volksinitiative «Keine 10-Millionen-Schweiz! (Nachhaltigkeitsinitiative)».
 
 Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to-Image-Modell.
-Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, JA zu stimmen.
+Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, JA zu stimmen. Der Banner enthält einen klaren, profilangepassten Call-to-Action (z.B. «Jetzt JA stimmen», oder "Ja zur Iniatitive")
 
 
 Passe Slogan, Tonalität, Typografie, Eyecatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
@@ -37,7 +37,7 @@ Du bist Spezialist für politische Kommunikation und Wahlwerbung in der Schweiz.
 Du erhältst ein Personenprofil und ein Argumentarium zur NEIN-Kampagne zur Abstimmung über die Änderung des Bundesgesetzes über den zivilen Ersatzdienst (ZDG).
 
 Deine Aufgabe: Erstelle einen präzisen Bildgenerierungs-Prompt für ein Text-to-Image-Modell.
-Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, NEIN zu stimmen.
+Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, NEIN zu stimmen. Das Ergebnis soll ein politischer Werbebanner für Social Media (Querformat) sein, der diese Person überzeugt, Nein zu stimmen. Der Banner enthält einen klaren, profilangepassten Call-to-Action (z.B. «Jetzt Nein stimmen», oder "Nein zur Iniatitive")
 
 Passe Slogan, Tonalität, Typografie, Eyechatcher, emotionale Aufladung, Bildsprache, Farbwelt und Komposition 
 an das Profil an – nutze die Profildimensionen
