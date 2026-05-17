@@ -64,6 +64,20 @@ const INDIVIDUALISMUS_OPTIONEN: Individualismus[] = [
   'Gemeinschaft und Solidarität',
 ];
 
+const ABSTIMMUNG_LABELS: Record<AbstimmungsTyp, string> = {
+  nachhaltigkeitsinitiative: 'Keine 10-Millionen-Schweiz',
+  zivildienstgesetz: 'Zivildienstgesetz',
+};
+
+const ABSTIMMUNG_OPTIONEN = Object.values(ABSTIMMUNG_LABELS);
+
+const ABSTIMMUNG_INFOS: Record<AbstimmungsTyp, string> = {
+  nachhaltigkeitsinitiative:
+    'Volksinitiative «Keine 10-Millionen-Schweiz! (Nachhaltigkeitsinitiative)». Die Initiative verlangt, die ständige Wohnbevölkerung der Schweiz vor 2050 unter zehn Millionen zu halten. Bundesrat und Parlament empfehlen die Ablehnung mit dem Hinweis auf wirtschaftliche Risiken und die Gefährdung des bilateralen Wegs mit der EU. Das Initiativkomitee argumentiert hingegen, die heutige Zuwanderung führe zu Wohnungsnot, steigender Kriminalität und Überlastung der Infrastruktur.',
+  zivildienstgesetz:
+    'Änderung des Bundesgesetzes über den zivilen Ersatzdienst (Zivildienstgesetz, ZDG). Die Vorlage will sicherstellen, dass der Zivildienst die Ausnahme und der Militärdienst die Regel bleibt. Bundesrat und Parlament empfehlen die Annahme, das Referendumskomitee warnt vor einem deutlichen Rückgang der Zivildienstleistenden und sieht die Vorlage als ersten Schritt zur Abschaffung des Zivildienstes.',
+};
+
 // Standardwerte für das Formular
 const STANDARD_PROFIL: ProfilDaten = {
   alter: 35,
@@ -87,6 +101,7 @@ interface UmfrageFormularProps {
 
 export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbstimmungWechseln }: UmfrageFormularProps) {
   const [profil, setProfil] = useState<ProfilDaten>(STANDARD_PROFIL);
+  const [infoOffen, setInfoOffen] = useState(false);
 
   // Hilfsfunktion zum Aktualisieren eines einzelnen Felds
   function feldAktualisieren<K extends keyof ProfilDaten>(
@@ -124,14 +139,48 @@ export default function UmfrageFormular({ onGenerieren, laedt, abstimmung, onAbs
           {/* Abstimmung wählen */}
           <SegmentedControl
             beschriftung="Abstimmung"
-            optionen={['Nachhaltigkeitsinitiative', 'Zivildienstgesetz']}
-            wert={abstimmung === 'nachhaltigkeitsinitiative' ? 'Nachhaltigkeitsinitiative' : 'Zivildienstgesetz'}
+            optionen={ABSTIMMUNG_OPTIONEN}
+            wert={ABSTIMMUNG_LABELS[abstimmung]}
             onChange={(v) =>
               onAbstimmungWechseln(
-                v === 'Zivildienstgesetz' ? 'zivildienstgesetz' : 'nachhaltigkeitsinitiative'
+                v === ABSTIMMUNG_LABELS.zivildienstgesetz
+                  ? 'zivildienstgesetz'
+                  : 'nachhaltigkeitsinitiative'
               )
             }
+            labelAktion={
+              <button
+                type="button"
+                aria-label="Info zur Abstimmung"
+                aria-expanded={infoOffen}
+                aria-controls="abstimmung-info"
+                onClick={() => setInfoOffen((prev) => !prev)}
+                className="w-6 h-6 flex items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-200 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              >
+                <svg
+                  className="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 8h.01M11 12h1v4h1M12 20a8 8 0 100-16 8 8 0 000 16z"
+                  />
+                </svg>
+              </button>
+            }
           />
+          {infoOffen && (
+            <div
+              id="abstimmung-info"
+              className="rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-700 leading-relaxed"
+            >
+              {ABSTIMMUNG_INFOS[abstimmung]}
+            </div>
+          )}
           {/* Alter */}
           <Slider
             beschriftung="Alter"
