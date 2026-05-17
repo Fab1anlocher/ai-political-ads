@@ -2,11 +2,14 @@
 
 // Segmented Control (Radiogruppe) im Apple-Stil
 
+import type { ReactNode } from 'react';
+
 interface SegmentedControlProps {
   beschriftung: string;
   optionen: string[];
   wert: string;
   onChange: (wert: string) => void;
+  labelAktion?: ReactNode;
 }
 
 export default function SegmentedControl({
@@ -14,11 +17,13 @@ export default function SegmentedControl({
   optionen,
   wert,
   onChange,
+  labelAktion,
 }: SegmentedControlProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-neutral-700">
-        {beschriftung}
+      <label className="text-sm font-medium text-neutral-700 flex items-center justify-between gap-2">
+        <span>{beschriftung}</span>
+        {labelAktion && <span className="flex items-center">{labelAktion}</span>}
       </label>
 
       <div className="flex bg-neutral-100 rounded-xl p-1 gap-1">
