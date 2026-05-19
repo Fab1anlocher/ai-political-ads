@@ -1,4 +1,4 @@
-# AI Political Ad Generator
+# AI Political Ad-Generator
 
 > Bachelor Thesis – Berner Fachhochschule
 
